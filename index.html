@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SalarySim">
+<meta name="theme-color" content="#1a5f3f">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Salary Sim</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #1a5f3f;
+    --green-light: #e8f5ee;
+    --green-mid: #2d8a5e;
+    --amber: #b45309;
+    --amber-light: #fef3c7;
+    --amber-mid: #d97706;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-400: #9ca3af;
+    --gray-600: #4b5563;
+    --gray-800: #1f2937;
+    --radius: 14px;
+    --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.06);
+  }
+
+  html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    background: var(--gray-100);
+    color: var(--gray-800);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--green);
+    color: #fff;
+    padding: 20px 20px 16px;
+    padding-top: calc(20px + env(safe-area-inset-top, 0));
+  }
+  header h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -.02em; }
+  header p { font-size: .75rem; opacity: .75; margin-top: 2px; }
+
+  main { padding: 16px; display: flex; flex-direction: column; gap: 14px; padding-bottom: 8px; }
+
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: 14px 16px 10px;
+    font-size: .7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--gray-400);
+    border-bottom: 1px solid var(--gray-100);
+  }
+
+  .card-body { padding: 14px 16px; }
+
+  /* Segmented control */
+  .seg { display: flex; background: var(--gray-100); border-radius: 10px; padding: 3px; gap: 3px; }
+  .seg label {
+    flex: 1; text-align: center;
+    padding: 10px 0;
+    border-radius: 8px;
+    font-size: .9rem; font-weight: 600;
+    cursor: pointer;
+    transition: background .15s, color .15s, box-shadow .15s;
+    color: var(--gray-600);
+    -webkit-tap-highlight-color: transparent;
+    min-height: 44px; display: flex; align-items: center; justify-content: center;
+  }
+  .seg input[type=radio] { display: none; }
+  .seg input[type=radio]:checked + label {
+    background: #fff;
+    color: var(--green);
+    box-shadow: 0 1px 4px rgba(0,0,0,.12);
+  }
+
+  /* Radio rows */
+  .radio-group { display: flex; flex-direction: column; gap: 2px; }
+  .radio-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 0; border-bottom: 1px solid var(--gray-100);
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+    min-height: 44px;
+  }
+  .radio-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .radio-row:first-child { padding-top: 0; }
+  .radio-dot {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 2px solid var(--gray-200);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: border-color .15s;
+  }
+  .radio-dot::after {
+    content: ''; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--green); display: none;
+  }
+  .radio-row input[type=radio]:checked ~ .radio-dot { border-color: var(--green); }
+  .radio-row input[type=radio]:checked ~ .radio-dot::after { display: block; }
+  .radio-row input[type=radio] { display: none; }
+  .radio-label { font-size: .9rem; color: var(--gray-800); flex: 1; }
+  .radio-label small { display: block; font-size: .75rem; color: var(--gray-400); margin-top: 1px; }
+
+  /* Checkboxes */
+  .check-group { display: flex; flex-direction: column; gap: 2px; }
+  .check-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 0; border-bottom: 1px solid var(--gray-100);
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+    min-height: 44px;
+  }
+  .check-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .check-row:first-child { padding-top: 0; }
+  .check-box {
+    width: 22px; height: 22px; border-radius: 6px;
+    border: 2px solid var(--gray-200);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: background .15s, border-color .15s;
+  }
+  .check-box svg { display: none; }
+  .check-row input[type=checkbox]:checked ~ .check-box {
+    background: var(--green); border-color: var(--green);
+  }
+  .check-row input[type=checkbox]:checked ~ .check-box svg { display: block; }
+  .check-row input[type=checkbox] { display: none; }
+  .check-label { font-size: .9rem; color: var(--gray-800); flex: 1; }
+  .check-label small { display: block; font-size: .75rem; color: var(--gray-400); margin-top: 1px; }
+
+  /* Live rates */
+  .rates-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .rate-cell {
+    background: var(--gray-50); border-radius: 10px; padding: 10px 12px;
+  }
+  .rate-cell .rate-label { font-size: .68rem; color: var(--gray-400); text-transform: uppercase; letter-spacing: .05em; }
+  .rate-cell .rate-value { font-size: 1.05rem; font-weight: 700; color: var(--green); margin-top: 2px; }
+  .rate-cell .rate-sub { font-size: .7rem; color: var(--gray-400); margin-top: 1px; }
+
+  /* Shift counters */
+  .shifts-grid { display: flex; flex-direction: column; gap: 2px; }
+  .shift-row {
+    display: flex; align-items: center;
+    padding: 8px 0; border-bottom: 1px solid var(--gray-100);
+    min-height: 52px;
+  }
+  .shift-row:last-child { border-bottom: none; }
+  .shift-info { flex: 1; }
+  .shift-name { font-size: .9rem; font-weight: 500; }
+  .shift-detail { font-size: .72rem; color: var(--gray-400); margin-top: 2px; }
+  .shift-ctrl { display: flex; align-items: center; gap: 0; }
+  .shift-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1.5px solid var(--gray-200); background: #fff;
+    font-size: 1.1rem; font-weight: 400; color: var(--gray-600);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    transition: background .1s, border-color .1s;
+    min-width: 44px; min-height: 44px;
+  }
+  .shift-btn:active { background: var(--gray-100); }
+  .shift-count {
+    width: 36px; text-align: center;
+    font-size: 1rem; font-weight: 600; color: var(--gray-800);
+  }
+
+  /* Coverage bonus */
+  .bonus-seg { display: flex; flex-direction: column; gap: 2px; }
+
+  /* Results */
+  .results-card {
+    background: var(--green);
+    color: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .results-hero {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid rgba(255,255,255,.15);
+  }
+  .results-hero .label { font-size: .72rem; opacity: .75; text-transform: uppercase; letter-spacing: .06em; }
+  .results-hero .amount {
+    font-size: 2.4rem; font-weight: 700; letter-spacing: -.03em; margin-top: 4px;
+    line-height: 1;
+  }
+  .results-hero .sub { font-size: .85rem; opacity: .8; margin-top: 4px; }
+
+  .results-annual {
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(255,255,255,.15);
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .results-annual .a-label { font-size: .8rem; opacity: .75; }
+  .results-annual .a-amount { font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em; }
+
+  .results-breakdown { padding: 14px 20px 18px; }
+  .breakdown-title { font-size: .68rem; opacity: .7; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
+  .breakdown-rows { display: flex; flex-direction: column; gap: 0; }
+  .br-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.08);
+    font-size: .85rem;
+  }
+  .br-row:last-child { border-bottom: none; }
+  .br-row .br-label { opacity: .8; }
+  .br-row .br-val { font-weight: 600; }
+  .br-row.positive .br-val { color: #6ee7b7; }
+  .br-row.negative .br-val { color: #fca5a5; }
+  .br-row.amber .br-val { color: #fcd34d; }
+  .br-row.total { border-top: 1px solid rgba(255,255,255,.2); margin-top: 4px; padding-top: 8px; }
+  .br-row.total .br-label { font-weight: 600; opacity: 1; }
+  .br-row.total .br-val { font-size: 1rem; color: #fff; }
+
+  footer {
+    text-align: center;
+    padding: 16px;
+    font-size: .7rem;
+    color: var(--gray-400);
+  }
+
+  /* Utility */
+  .mt4 { margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Salary Sim</h1>
+  <p>Lääkärisopimus 2025–2028 · Liite 3</p>
+</header>
+
+<main>
+
+  <!-- 1. Salary group -->
+  <div class="card">
+    <div class="card-header">Salary Group</div>
+    <div class="card-body">
+      <div class="seg">
+        <input type="radio" name="group" id="g3a" value="3A">
+        <label for="g3a">3A<br><small style="font-size:.7rem;font-weight:400;opacity:.7">€7,370</small></label>
+
+        <input type="radio" name="group" id="g3b" value="3B" checked>
+        <label for="g3b">3B<br><small style="font-size:.7rem;font-weight:400;opacity:.7">€7,800</small></label>
+
+        <input type="radio" name="group" id="g3c" value="3C">
+        <label for="g3c">3C<br><small style="font-size:.7rem;font-weight:400;opacity:.7">€8,507.50</small></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Experience supplement -->
+  <div class="card">
+    <div class="card-header">Experience Supplement</div>
+    <div class="card-body">
+      <div class="radio-group">
+        <label class="radio-row">
+          <input type="radio" name="exp" value="0" checked>
+          <span class="radio-dot"></span>
+          <span class="radio-label">None</span>
+        </label>
+        <label class="radio-row">
+          <input type="radio" name="exp" value="0.03">
+          <span class="radio-dot"></span>
+          <span class="radio-label">+3% <small>5 years at same hospital</small></span>
+        </label>
+        <label class="radio-row">
+          <input type="radio" name="exp" value="0.08">
+          <span class="radio-dot"></span>
+          <span class="radio-label">+8% <small>10+ years at same hospital</small></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Announced raises -->
+  <div class="card">
+    <div class="card-header">Announced Raises</div>
+    <div class="card-body">
+      <div class="check-group">
+        <label class="check-row">
+          <input type="checkbox" id="raise2026">
+          <span class="check-box">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="check-label">+2.27% <small>August 2026</small></span>
+        </label>
+        <label class="check-row">
+          <input type="checkbox" id="raise2027">
+          <span class="check-box">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="check-label">+2.00% <small>April 2027</small></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Add-ons -->
+  <div class="card">
+    <div class="card-header">Add-ons (Fixed)</div>
+    <div class="card-body">
+      <div class="check-group">
+        <label class="check-row">
+          <input type="checkbox" id="addon_teaching">
+          <span class="check-box">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="check-label">Vastuukouluttaja <small>Teaching supervisor · +€300/month</small></span>
+        </label>
+        <label class="check-row">
+          <input type="checkbox" id="addon_safety">
+          <span class="check-box">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="check-label">Potilasturvallisuusvastaava <small>Patient safety · +€105/month</small></span>
+        </label>
+        <label class="check-row">
+          <input type="checkbox" id="addon_quality">
+          <span class="check-box">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="check-label">Laatu vastaava <small>Quality supervisor · +€105/month</small></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Live rates -->
+  <div class="card">
+    <div class="card-header">Live Rates</div>
+    <div class="card-body">
+      <div class="rates-grid">
+        <div class="rate-cell">
+          <div class="rate-label">Base (daytime)</div>
+          <div class="rate-value" id="rate_base">€0.00</div>
+          <div class="rate-sub">×1.00 · 10h–15h</div>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-label">Evening</div>
+          <div class="rate-value" id="rate_eve">€0.00</div>
+          <div class="rate-sub">×1.75 · 15h–22h</div>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-label">Weekend/Holiday</div>
+          <div class="rate-value" id="rate_wknd">€0.00</div>
+          <div class="rate-sub">×2.25 · Sat/Sun</div>
+        </div>
+        <div class="rate-cell">
+          <div class="rate-label">Night</div>
+          <div class="rate-value" id="rate_night">€0.00</div>
+          <div class="rate-sub">×3.00 · 22h–06h</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Shifts -->
+  <div class="card">
+    <div class="card-header">Shifts This Month</div>
+    <div class="card-body">
+      <div class="shifts-grid">
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Saturday</div>
+            <div class="shift-detail">12h · ×2.25 all day</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="adj('sat',-1)">−</button>
+            <span class="shift-count" id="cnt_sat">0</span>
+            <button class="shift-btn" onclick="adj('sat',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Sunday</div>
+            <div class="shift-detail">12h · ×2.25 all day</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="adj('sun',-1)">−</button>
+            <span class="shift-count" id="cnt_sun">0</span>
+            <button class="shift-btn" onclick="adj('sun',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Mon – Thu</div>
+            <div class="shift-detail">5h base + 7h evening</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="adj('mth',-1)">−</button>
+            <span class="shift-count" id="cnt_mth">0</span>
+            <button class="shift-btn" onclick="adj('mth',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Friday</div>
+            <div class="shift-detail">5h base + 3h eve + 4h wknd</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="adj('fri',-1)">−</button>
+            <span class="shift-count" id="cnt_fri">0</span>
+            <button class="shift-btn" onclick="adj('fri',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Night shift</div>
+            <div class="shift-detail">Sun 20h→Mon 06h · 2h wknd + 8h night</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="adj('ngt',-1)">−</button>
+            <span class="shift-count" id="cnt_ngt">0</span>
+            <button class="shift-btn" onclick="adj('ngt',1)">+</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Coverage bonus -->
+  <div class="card">
+    <div class="card-header">Coverage Bonus (one-time)</div>
+    <div class="card-body">
+      <div class="radio-group bonus-seg">
+        <label class="radio-row">
+          <input type="radio" name="bonus" value="0" checked>
+          <span class="radio-dot"></span>
+          <span class="radio-label">None</span>
+        </label>
+        <label class="radio-row">
+          <input type="radio" name="bonus" value="600">
+          <span class="radio-dot"></span>
+          <span class="radio-label">+€600 <small>Weekend/holiday urgent shift</small></span>
+        </label>
+        <label class="radio-row">
+          <input type="radio" name="bonus" value="450">
+          <span class="radio-dot"></span>
+          <span class="radio-label">+€450 <small>Weekday urgent shift</small></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Results -->
+  <div class="results-card">
+    <div class="results-hero">
+      <div class="label">Monthly Gross</div>
+      <div class="amount" id="res_monthly">€0</div>
+      <div class="sub" id="res_monthly_sub">base salary + clinical shifts</div>
+    </div>
+    <div class="results-annual">
+      <span class="a-label">Annual Gross</span>
+      <span class="a-amount" id="res_annual">€0</span>
+    </div>
+    <div class="results-breakdown">
+      <div class="breakdown-title">Monthly breakdown</div>
+      <div class="breakdown-rows">
+        <div class="br-row">
+          <span class="br-label">Effective base salary</span>
+          <span class="br-val" id="bd_base">€0</span>
+        </div>
+        <div class="br-row negative">
+          <span class="br-label">Embedded clinical hours (−)</span>
+          <span class="br-val" id="bd_embedded">−€0</span>
+        </div>
+        <div class="br-row positive">
+          <span class="br-label">Clinical shift value</span>
+          <span class="br-val" id="bd_clinical">+€0</span>
+        </div>
+        <div class="br-row positive">
+          <span class="br-label">Add-ons</span>
+          <span class="br-val" id="bd_addons">+€0</span>
+        </div>
+        <div class="br-row amber">
+          <span class="br-label">Coverage bonus</span>
+          <span class="br-val" id="bd_bonus">+€0</span>
+        </div>
+        <div class="br-row total">
+          <span class="br-label">Monthly gross</span>
+          <span class="br-val" id="bd_total">€0</span>
+        </div>
+      </div>
+      <div class="breakdown-title mt4" style="margin-top:16px">Annual breakdown</div>
+      <div class="breakdown-rows">
+        <div class="br-row">
+          <span class="br-label">11 regular months</span>
+          <span class="br-val" id="bd_11m">€0</span>
+        </div>
+        <div class="br-row">
+          <span class="br-label">Holiday month (base only)</span>
+          <span class="br-val" id="bd_holmonth">€0</span>
+        </div>
+        <div class="br-row positive">
+          <span class="br-label">Lomaraha (60% of base)</span>
+          <span class="br-val" id="bd_lomaraha">+€0</span>
+        </div>
+        <div class="br-row total">
+          <span class="br-label">Annual gross</span>
+          <span class="br-val" id="bd_annual">€0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>Lääkärisopimus 2025–2028 · Liite 3 · For simulation purposes only</footer>
+
+<script>
+// --- State ---
+const BASE = { '3A': 7370, '3B': 7800, '3C': 8507.50 };
+const MONTHLY_HOURS = 165.75; // 38.25 × 52/12
+const EMBEDDED_HOURS = 82.33;
+
+const counts = { sat: 0, sun: 0, mth: 0, fri: 0, ngt: 0 };
+
+function getGroup() {
+  return document.querySelector('input[name=group]:checked').value;
+}
+function getExp() {
+  return parseFloat(document.querySelector('input[name=exp]:checked').value);
+}
+function getRaises() {
+  const r2026 = document.getElementById('raise2026').checked ? 0.0227 : 0;
+  const r2027 = document.getElementById('raise2027').checked ? 0.0200 : 0;
+  return { r2026, r2027 };
+}
+function getAddons() {
+  const t = document.getElementById('addon_teaching').checked ? 300 : 0;
+  const s = document.getElementById('addon_safety').checked ? 105 : 0;
+  const q = document.getElementById('addon_quality').checked ? 105 : 0;
+  return t + s + q;
+}
+function getBonus() {
+  return parseFloat(document.querySelector('input[name=bonus]:checked').value);
+}
+
+function effectiveBase() {
+  const base = BASE[getGroup()];
+  const exp = getExp();
+  const { r2026, r2027 } = getRaises();
+  let sal = base * (1 + exp);
+  sal = sal * (1 + r2026);
+  sal = sal * (1 + r2027);
+  return sal;
+}
+
+function hourlyRate(base) {
+  return base / MONTHLY_HOURS;
+}
+
+function shiftValues(h) {
+  return {
+    sat:  12 * h * 2.25,
+    sun:  12 * h * 2.25,
+    mth:  5 * h * 1.00 + 7 * h * 1.75,
+    fri:  5 * h * 1.00 + 3 * h * 1.75 + 4 * h * 2.25,
+    ngt:  2 * h * 2.25 + 8 * h * 3.00,
+  };
+}
+
+function calc() {
+  const eb = effectiveBase();
+  const h = hourlyRate(eb);
+  const sv = shiftValues(h);
+
+  const embedded = EMBEDDED_HOURS * h;
+  const clinicalValue = counts.sat * sv.sat + counts.sun * sv.sun +
+                        counts.mth * sv.mth + counts.fri * sv.fri + counts.ngt * sv.ngt;
+  const addons = getAddons();
+  const bonus = getBonus();
+
+  const monthly = eb - embedded + clinicalValue + addons + bonus;
+  // Annual: 11 regular months + holiday month (base only) + lomaraha
+  const holidayMonth = eb; // holiday month = effective base only (no shifts, no bonus)
+  const lomaraha = eb * 0.60;
+  const annual = monthly * 11 + holidayMonth + lomaraha;
+
+  return { eb, h, embedded, clinicalValue, addons, bonus, monthly, holidayMonth, lomaraha, annual };
+}
+
+function fmt(n, prefix = '€') {
+  return prefix + n.toLocaleString('fi-FI', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function fmtK(n) {
+  return '€' + n.toLocaleString('fi-FI', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+function render() {
+  const r = calc();
+  const h = r.h;
+
+  // Rates
+  document.getElementById('rate_base').textContent  = fmt(h * 1.00);
+  document.getElementById('rate_eve').textContent   = fmt(h * 1.75);
+  document.getElementById('rate_wknd').textContent  = fmt(h * 2.25);
+  document.getElementById('rate_night').textContent = fmt(h * 3.00);
+
+  // Results hero
+  document.getElementById('res_monthly').textContent = fmtK(r.monthly);
+  document.getElementById('res_annual').textContent  = fmtK(r.annual);
+
+  // Breakdown monthly
+  document.getElementById('bd_base').textContent     = fmt(r.eb);
+  document.getElementById('bd_embedded').textContent = '−' + fmt(r.embedded);
+  document.getElementById('bd_clinical').textContent = '+' + fmt(r.clinicalValue);
+  document.getElementById('bd_addons').textContent   = r.addons > 0 ? '+' + fmt(r.addons) : fmt(0);
+  document.getElementById('bd_bonus').textContent    = r.bonus > 0 ? '+' + fmt(r.bonus) : fmt(0);
+  document.getElementById('bd_total').textContent    = fmt(r.monthly);
+
+  // Breakdown annual
+  document.getElementById('bd_11m').textContent      = fmt(r.monthly * 11);
+  document.getElementById('bd_holmonth').textContent = fmt(r.holidayMonth);
+  document.getElementById('bd_lomaraha').textContent = '+' + fmt(r.lomaraha);
+  document.getElementById('bd_annual').textContent   = fmt(r.annual);
+}
+
+function adj(key, delta) {
+  counts[key] = Math.max(0, counts[key] + delta);
+  document.getElementById('cnt_' + key).textContent = counts[key];
+  render();
+}
+
+// Attach listeners to all inputs
+document.querySelectorAll('input').forEach(el => {
+  el.addEventListener('change', render);
+});
+
+// Service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js');
+}
+
+// Initial render
+render();
+</script>
+</body>
+</html>
