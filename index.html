@@ -595,20 +595,27 @@ function getBonus() {
   return parseFloat(document.querySelector('input[name=bonus]:checked').value);
 }
 
-function effectiveBase() {
+// Full calculated base: group_base × exp × raises — used for hourly rate & shift math.
+// Contract % NEVER touches this value.
+function fullCalcBase() {
   const base = BASE[getGroup()];
   const exp = getExp();
   const { r2026, r2027 } = getRaises();
   let sal = base * (1 + exp);
   sal = sal * (1 + r2026);
   sal = sal * (1 + r2027);
-  // Apply contract percentage
-  if (getContract() === '80') sal = sal * 0.80;
   return sal;
 }
 
-function hourlyRate(base) {
-  return base / MONTHLY_HOURS;
+// Base actually received in salary: applies contract %.
+function baseReceived() {
+  const factor = getContract() === '80' ? 0.80 : 1.00;
+  return fullCalcBase() * factor;
+}
+
+// Hourly rate is always derived from full calc base — never from contract-reduced base.
+function hourlyRate() {
+  return fullCalcBase() / MONTHLY_HOURS;
 }
 
 function shiftValues(h) {
@@ -625,23 +632,22 @@ function calc() {
   const is80 = getContract() === '80';
   const embeddedHours = is80 ? EMBEDDED_HOURS_80 : EMBEDDED_HOURS_100;
 
-  const eb = effectiveBase();
-  const h = hourlyRate(eb);
+  const br = baseReceived();          // salary line (may be 80%-reduced)
+  const h  = hourlyRate();            // always full-base hourly rate
   const sv = shiftValues(h);
 
-  const embedded = embeddedHours * h;
+  const embedded     = embeddedHours * h;
   const clinicalValue = counts.sat * sv.sat + counts.sun * sv.sun +
                         counts.mth * sv.mth + counts.fri * sv.fri + counts.ngt * sv.ngt;
   const addons = getAddons();
-  const bonus = getBonus();
+  const bonus  = getBonus();
 
-  const monthly = eb - embedded + clinicalValue + addons + bonus;
-  // Annual: 11 regular months + holiday month (base only) + lomaraha
-  const holidayMonth = eb; // holiday month = effective base only (no shifts, no bonus)
-  const lomaraha = eb * 0.60;
-  const annual = monthly * 11 + holidayMonth + lomaraha;
+  const monthly      = br - embedded + clinicalValue + addons + bonus;
+  const holidayMonth = br;            // holiday month = base received only
+  const lomaraha     = br * 0.60;
+  const annual       = monthly * 11 + holidayMonth + lomaraha;
 
-  return { eb, h, embedded, embeddedHours, clinicalValue, addons, bonus, monthly, holidayMonth, lomaraha, annual };
+  return { br, h, embedded, embeddedHours, clinicalValue, addons, bonus, monthly, holidayMonth, lomaraha, annual };
 }
 
 function fmt(n, prefix = '€') {
@@ -653,15 +659,15 @@ function fmtK(n) {
 
 function render() {
   const r = calc();
-  const h = r.h;
+  const h = r.h; // always full-base hourly rate
 
   // Contract info pill
   const is80 = getContract() === '80';
   document.getElementById('contract_info').textContent = is80
-    ? '~30.8h/week · 65.86h clinical/month embedded'
-    : '~38.5h/week · 82.33h clinical/month embedded';
+    ? '~30.8h/week · 65.86h/month embedded'
+    : '~38.5h/week · 82.33h/month embedded';
 
-  // Rates
+  // Live rates — always derived from full hourly rate, unaffected by contract %
   document.getElementById('rate_base').textContent  = fmt(h * 1.00);
   document.getElementById('rate_eve').textContent   = fmt(h * 1.75);
   document.getElementById('rate_wknd').textContent  = fmt(h * 2.25);
@@ -673,7 +679,7 @@ function render() {
 
   // Breakdown monthly
   document.getElementById('bd_embedded_label').textContent = `Embedded clinical (${r.embeddedHours}h)`;
-  document.getElementById('bd_base').textContent     = fmt(r.eb);
+  document.getElementById('bd_base').textContent     = fmt(r.br);
   document.getElementById('bd_embedded').textContent = '−' + fmt(r.embedded);
   document.getElementById('bd_clinical').textContent = '+' + fmt(r.clinicalValue);
   document.getElementById('bd_addons').textContent   = r.addons > 0 ? '+' + fmt(r.addons) : fmt(0);
