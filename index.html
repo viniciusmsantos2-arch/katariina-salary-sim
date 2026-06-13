@@ -466,16 +466,45 @@
           </div>
         </div>
 
+        <!-- FRIDAY -->
+        <div class="shift-section">Friday</div>
+
         <div class="shift-row">
           <div class="shift-info">
-            <div class="shift-name">Friday</div>
-            <div class="shift-detail">10h–22h · 5h base + 3h eve + 4h wknd</div>
-            <div class="shift-val" id="val_fri">€0/shift</div>
+            <div class="shift-name">Friday 8h</div>
+            <div class="shift-detail">08h–16h · 7h base + 1h eve</div>
+            <div class="shift-val" id="val_fri8">€0/shift</div>
           </div>
           <div class="shift-ctrl">
-            <button class="shift-btn" onclick="adj('fri',-1)">−</button>
-            <span class="shift-count" id="cnt_fri">0</span>
-            <button class="shift-btn" onclick="adj('fri',1)">+</button>
+            <button class="shift-btn" onclick="adj('fri8',-1)">−</button>
+            <span class="shift-count" id="cnt_fri8">0</span>
+            <button class="shift-btn" onclick="adj('fri8',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Friday 7.5h</div>
+            <div class="shift-detail">15h30–23h · 2.5h eve + 4h wknd + 1h night</div>
+            <div class="shift-val" id="val_fri75">€0/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="adj('fri75',-1)">−</button>
+            <span class="shift-count" id="cnt_fri75">0</span>
+            <button class="shift-btn" onclick="adj('fri75',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Friday 12h</div>
+            <div class="shift-detail">08h–20h · 7h base + 3h eve + 2h wknd</div>
+            <div class="shift-val" id="val_fri12">€0/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="adj('fri12',-1)">−</button>
+            <span class="shift-count" id="cnt_fri12">0</span>
+            <button class="shift-btn" onclick="adj('fri12',1)">+</button>
           </div>
         </div>
 
@@ -681,8 +710,8 @@ const EMBEDDED_HOURS_80  = 65.86;
 
 // All shift keys
 const counts = {
-  wd12: 0, wd8: 0, wd75: 0,           // weekday
-  fri: 0,                               // friday
+  wd12: 0, wd8: 0, wd75: 0,            // weekday
+  fri8: 0, fri75: 0, fri12: 0,         // friday
   sat15: 0, sat8: 0, sat12: 0,         // saturday
   sun15: 0, sun8: 0, sun12: 0,         // sunday
   ngt: 0,                               // sunday night
@@ -728,7 +757,9 @@ function shiftValues(h) {
     wd8:   7*h*1.00 + 1*h*1.75,                    // 08h–15h base, 15h–16h eve
     wd75:  6.5*h*1.75 + 1*h*3.00,                  // 15h30–22h eve, 22h–23h night
     // Friday
-    fri:   5*h*1.00 + 3*h*1.75 + 4*h*2.25,         // 10h–15h base, 15h–18h eve, 18h–22h wknd
+    fri8:  7*h*1.00 + 1*h*1.75,                    // 08h–15h base, 15h–16h eve
+    fri75: 2.5*h*1.75 + 4*h*2.25 + 1*h*3.00,       // 15h30–18h eve, 18h–22h wknd, 22h–23h night
+    fri12: 7*h*1.00 + 3*h*1.75 + 2*h*2.25,         // 08h–15h base, 15h–18h eve, 18h–20h wknd
     // Saturday
     sat15: 14*h*2.25 + 1*h*3.00,                   // 08h–22h wknd, 22h–23h night
     sat8:  8*h*2.25,                                 // 12h–20h wknd
@@ -756,7 +787,7 @@ function calc() {
   // Sum all shifts
   const clinicalValue =
     counts.wd12  * sv.wd12  + counts.wd8   * sv.wd8   + counts.wd75  * sv.wd75  +
-    counts.fri   * sv.fri   +
+    counts.fri8  * sv.fri8  + counts.fri75 * sv.fri75 + counts.fri12 * sv.fri12 +
     counts.sat15 * sv.sat15 + counts.sat8  * sv.sat8  + counts.sat12 * sv.sat12 +
     counts.sun15 * sv.sun15 + counts.sun8  * sv.sun8  + counts.sun12 * sv.sun12 +
     counts.ngt   * sv.ngt;
@@ -799,7 +830,9 @@ function render() {
   document.getElementById('val_wd12').textContent  = fmtShift(sv.wd12);
   document.getElementById('val_wd8').textContent   = fmtShift(sv.wd8);
   document.getElementById('val_wd75').textContent  = fmtShift(sv.wd75);
-  document.getElementById('val_fri').textContent   = fmtShift(sv.fri);
+  document.getElementById('val_fri8').textContent  = fmtShift(sv.fri8);
+  document.getElementById('val_fri75').textContent = fmtShift(sv.fri75);
+  document.getElementById('val_fri12').textContent = fmtShift(sv.fri12);
   document.getElementById('val_sat15').textContent = fmtShift(sv.sat15);
   document.getElementById('val_sat8').textContent  = fmtShift(sv.sat8);
   document.getElementById('val_sat12').textContent = fmtShift(sv.sat12);
