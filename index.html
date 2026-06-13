@@ -195,6 +195,27 @@
   }
   .shift-section:first-child { padding-top: 0; }
 
+  /* Freelance comparison section inside contract results */
+  .cmp-section {
+    border-top: 1px solid rgba(255,255,255,.15);
+    margin-top: 12px; padding-top: 12px;
+  }
+  .cmp-title {
+    font-size: .65rem; opacity: .6; text-transform: uppercase;
+    letter-spacing: .07em; margin-bottom: 8px;
+  }
+  .cmp-row {
+    font-size: .8rem; opacity: .85; line-height: 1.5; margin-bottom: 2px;
+  }
+  .cmp-diff {
+    font-size: .88rem; font-weight: 700; margin-top: 6px;
+  }
+  .cmp-diff.up   { color: #6ee7b7; }
+  .cmp-diff.down { color: #fcd34d; }
+  .cmp-annual {
+    font-size: .78rem; opacity: .75; margin-top: 2px;
+  }
+
   /* Mode toggle (top of page) */
   .mode-toggle-wrap {
     background: var(--green);
@@ -815,6 +836,14 @@
           <span class="br-val" id="bd_annual">€0</span>
         </div>
       </div>
+
+      <!-- Freelance comparison -->
+      <div class="cmp-section">
+        <div class="cmp-title">Same shifts · Freelance model</div>
+        <div class="cmp-row" id="cmp_equiv">Freelance equivalent: —</div>
+        <div class="cmp-diff" id="cmp_diff"></div>
+        <div class="cmp-annual" id="cmp_annual"></div>
+      </div>
     </div>
   </div>
 
@@ -1178,6 +1207,30 @@ function calc() {
   return { br, h, sv, embedded, embeddedHours, clinicalValue, addons, bonus, monthly, holidayMonth, lomaraha, annual };
 }
 
+// --- Freelance equivalent for contract shifts ---
+// Uses the same counts[] object but applies freelance fixed rates.
+const FL_EQUIV = {
+  wd12:  7*75.25 + 5*98.00,          // 08h–15h base + 15h–20h eve
+  wd8:   7*75.25 + 1*98.00,          // 08h–15h base + 15h–16h eve
+  wd75:  4.5*98.00 + 3*104.00,       // 15h30–20h eve + 20h–23h
+  fri12: 7*75.25 + 5*98.00,          // same as weekday
+  fri8:  7*75.25 + 1*98.00,
+  fri75: 4.5*98.00 + 3*104.00,
+  sat15: 14*104.00 + 1*117.00,       // 08h–22h + 22h–23h
+  sat12: 12*104.00,
+  sat8:  8*104.00,
+  sun15: 14*104.00 + 1*117.00,
+  sun12: 12*104.00,
+  sun8:  8*104.00,
+  ngt:   2*104.00 + 8*117.00,        // 20h–22h + 22h–06h
+};
+
+function freelanceMonthly() {
+  return Object.keys(FL_EQUIV).reduce(
+    (sum, k) => sum + (counts[k] || 0) * FL_EQUIV[k], 0
+  );
+}
+
 // --- Formatting ---
 function fmt(n)  { return '€' + n.toLocaleString('fi-FI', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 function fmtK(n) { return '€' + n.toLocaleString('fi-FI', { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
@@ -1261,6 +1314,28 @@ function render() {
   document.getElementById('bd_holmonth').textContent = fmt(r.holidayMonth);
   document.getElementById('bd_lomaraha').textContent = '+' + fmt(r.lomaraha);
   document.getElementById('bd_annual').textContent   = fmt(r.annual);
+
+  // Freelance comparison
+  const flMonthly = freelanceMonthly();
+  const flAnnual  = flMonthly * 12;
+  const diffM     = r.monthly - flMonthly;
+  const diffA     = r.annual  - flAnnual;
+  const hasShifts = Object.values(counts).some(v => v > 0);
+
+  if (!hasShifts) {
+    document.getElementById('cmp_equiv').textContent  = 'Freelance equivalent: add shifts to compare';
+    document.getElementById('cmp_diff').textContent   = '';
+    document.getElementById('cmp_annual').textContent = '';
+  } else {
+    document.getElementById('cmp_equiv').textContent =
+      `Freelance equivalent: ${fmtK(flMonthly)}/month · ${fmtK(flAnnual)}/year (×12, no holiday pay)`;
+    const diffEl = document.getElementById('cmp_diff');
+    const sign = diffM >= 0 ? '+' : '−';
+    diffEl.textContent  = `${diffM >= 0 ? '↑' : '↓'} ${sign}${fmtK(Math.abs(diffM))}/month with new contract`;
+    diffEl.className    = 'cmp-diff ' + (diffM >= 0 ? 'up' : 'down');
+    document.getElementById('cmp_annual').textContent =
+      `Annual difference: ${diffA >= 0 ? '+' : ''}${fmtK(diffA)} (incl. holiday pay & lomaraha)`;
+  }
 }
 
 // --- Counter adjust ---
