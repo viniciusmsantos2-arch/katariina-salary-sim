@@ -195,6 +195,46 @@
   }
   .shift-section:first-child { padding-top: 0; }
 
+  /* Mode toggle (top of page) */
+  .mode-toggle-wrap {
+    background: var(--green);
+    padding: 0 16px 14px;
+  }
+  .mode-toggle {
+    display: flex; background: rgba(255,255,255,.15);
+    border-radius: 10px; padding: 3px; gap: 3px;
+  }
+  .mode-toggle input[type=radio] { display: none; }
+  .mode-toggle label {
+    flex: 1; text-align: center; padding: 10px 8px;
+    border-radius: 8px; font-size: .82rem; font-weight: 600;
+    cursor: pointer; color: rgba(255,255,255,.75);
+    -webkit-tap-highlight-color: transparent;
+    transition: background .15s, color .15s, box-shadow .15s;
+    min-height: 44px; display: flex; align-items: center; justify-content: center;
+    line-height: 1.2;
+  }
+  .mode-toggle input[type=radio]:checked + label {
+    background: #fff; color: var(--green);
+    box-shadow: 0 1px 4px rgba(0,0,0,.15);
+  }
+
+  /* Freelance shifts card sections */
+  .fl-section {
+    font-size: .68rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--gray-400);
+    padding: 10px 0 4px; border-bottom: 1px solid var(--gray-100);
+    margin-bottom: 2px;
+  }
+  .fl-section:first-child { padding-top: 0; }
+
+  /* Freelance warning note */
+  .fl-warning {
+    background: var(--amber-light); border-radius: 10px;
+    padding: 10px 12px; font-size: .78rem; color: var(--amber);
+    line-height: 1.5; margin-top: 2px;
+  }
+
   /* Clinical hours tracker */
   .hours-summary {
     display: flex; justify-content: space-between; align-items: baseline;
@@ -289,7 +329,16 @@
   <p>Lääkärisopimus 2025–2028 · Liite 3</p>
 </header>
 
-<main>
+<div class="mode-toggle-wrap">
+  <div class="mode-toggle">
+    <input type="radio" name="mode" id="mode_contract" value="contract" checked>
+    <label for="mode_contract">New Contract</label>
+    <input type="radio" name="mode" id="mode_freelance" value="freelance">
+    <label for="mode_freelance">Current Model · Freelance</label>
+  </div>
+</div>
+
+<main id="mode-contract">
 
   <!-- 01. Contract type -->
   <div class="card">
@@ -771,6 +820,243 @@
 
 </main>
 
+<!-- ══════════════ FREELANCE MODE ══════════════ -->
+<main id="mode-freelance" style="display:none">
+
+  <!-- Freelance shifts card -->
+  <div class="card">
+    <div class="card-header">Shifts This Month</div>
+    <div class="card-body">
+      <div class="shifts-grid">
+
+        <div class="fl-section">Weekday</div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Weekday 8h</div>
+            <div class="shift-detail">08h–16h · 7h×€75.25 + 1h×€98.00</div>
+            <div class="shift-val" id="fl_val_wd8">€624.75/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="fladj('wd8',-1)">−</button>
+            <span class="shift-count" id="fl_cnt_wd8">0</span>
+            <button class="shift-btn" onclick="fladj('wd8',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Weekday 12h</div>
+            <div class="shift-detail">08h–20h · 7h×€75.25 + 5h×€98.00</div>
+            <div class="shift-val" id="fl_val_wd12">€1,016.75/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="fladj('wd12',-1)">−</button>
+            <span class="shift-count" id="fl_cnt_wd12">0</span>
+            <button class="shift-btn" onclick="fladj('wd12',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Weekday 7.5h</div>
+            <div class="shift-detail">15h30–23h · 4.5h×€98.00 + 3h×€104.00</div>
+            <div class="shift-val" id="fl_val_wd75">€753.00/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="fladj('wd75',-1)">−</button>
+            <span class="shift-count" id="fl_cnt_wd75">0</span>
+            <button class="shift-btn" onclick="fladj('wd75',1)">+</button>
+          </div>
+        </div>
+
+        <div class="fl-section">Friday</div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Friday 8h</div>
+            <div class="shift-detail">08h–16h · 7h×€75.25 + 1h×€98.00</div>
+            <div class="shift-val" id="fl_val_fri8">€624.75/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="fladj('fri8',-1)">−</button>
+            <span class="shift-count" id="fl_cnt_fri8">0</span>
+            <button class="shift-btn" onclick="fladj('fri8',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Friday 12h</div>
+            <div class="shift-detail">08h–20h · 7h×€75.25 + 5h×€98.00</div>
+            <div class="shift-val" id="fl_val_fri12">€1,016.75/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="fladj('fri12',-1)">−</button>
+            <span class="shift-count" id="fl_cnt_fri12">0</span>
+            <button class="shift-btn" onclick="fladj('fri12',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Friday 7.5h</div>
+            <div class="shift-detail">15h30–23h · 4.5h×€98.00 + 3h×€104.00</div>
+            <div class="shift-val" id="fl_val_fri75">€753.00/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="fladj('fri75',-1)">−</button>
+            <span class="shift-count" id="fl_cnt_fri75">0</span>
+            <button class="shift-btn" onclick="fladj('fri75',1)">+</button>
+          </div>
+        </div>
+
+        <div class="fl-section">Saturday</div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Saturday 8h</div>
+            <div class="shift-detail">12h–20h · 8h×€104.00</div>
+            <div class="shift-val" id="fl_val_sat8">€832.00/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="fladj('sat8',-1)">−</button>
+            <span class="shift-count" id="fl_cnt_sat8">0</span>
+            <button class="shift-btn" onclick="fladj('sat8',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Saturday 12h</div>
+            <div class="shift-detail">10h–22h · 12h×€104.00</div>
+            <div class="shift-val" id="fl_val_sat12">€1,248.00/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="fladj('sat12',-1)">−</button>
+            <span class="shift-count" id="fl_cnt_sat12">0</span>
+            <button class="shift-btn" onclick="fladj('sat12',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Saturday 15h</div>
+            <div class="shift-detail">08h–23h · 14h×€104.00 + 1h×€117.00</div>
+            <div class="shift-val" id="fl_val_sat15">€1,573.00/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="fladj('sat15',-1)">−</button>
+            <span class="shift-count" id="fl_cnt_sat15">0</span>
+            <button class="shift-btn" onclick="fladj('sat15',1)">+</button>
+          </div>
+        </div>
+
+        <div class="fl-section">Sunday</div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Sunday 8h</div>
+            <div class="shift-detail">12h–20h · 8h×€104.00</div>
+            <div class="shift-val" id="fl_val_sun8">€832.00/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="fladj('sun8',-1)">−</button>
+            <span class="shift-count" id="fl_cnt_sun8">0</span>
+            <button class="shift-btn" onclick="fladj('sun8',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Sunday 12h</div>
+            <div class="shift-detail">10h–22h · 12h×€104.00</div>
+            <div class="shift-val" id="fl_val_sun12">€1,248.00/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="fladj('sun12',-1)">−</button>
+            <span class="shift-count" id="fl_cnt_sun12">0</span>
+            <button class="shift-btn" onclick="fladj('sun12',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Sunday 15h</div>
+            <div class="shift-detail">08h–23h · 14h×€104.00 + 1h×€117.00</div>
+            <div class="shift-val" id="fl_val_sun15">€1,573.00/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="fladj('sun15',-1)">−</button>
+            <span class="shift-count" id="fl_cnt_sun15">0</span>
+            <button class="shift-btn" onclick="fladj('sun15',1)">+</button>
+          </div>
+        </div>
+
+        <div class="fl-section">Night</div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Night shift</div>
+            <div class="shift-detail">Sun 20h–Mon 06h · 2h×€104.00 + 8h×€117.00</div>
+            <div class="shift-val" id="fl_val_ngt">€1,144.00/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="fladj('ngt',-1)">−</button>
+            <span class="shift-count" id="fl_cnt_ngt">0</span>
+            <button class="shift-btn" onclick="fladj('ngt',1)">+</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Freelance results -->
+  <div class="results-card">
+    <div class="results-hero">
+      <div class="label">Monthly Gross</div>
+      <div class="amount" id="fl_monthly">€0</div>
+      <div class="sub">No base salary · shifts only</div>
+    </div>
+    <div class="results-annual">
+      <span class="a-label">Annual Gross</span>
+      <span class="a-amount" id="fl_annual">€0</span>
+    </div>
+    <div class="results-breakdown">
+      <div class="fl-warning">⚠️ No holiday pay · No lomaraha · 12 months of work with no paid rest</div>
+      <div class="breakdown-title" style="margin-top:14px">Breakdown</div>
+      <div class="breakdown-rows">
+        <div class="br-row">
+          <span class="br-label">Total shifts</span>
+          <span class="br-val" id="fl_bd_shifts">0</span>
+        </div>
+        <div class="br-row">
+          <span class="br-label">Total hours</span>
+          <span class="br-val" id="fl_bd_hours">0h</span>
+        </div>
+        <div class="br-row positive">
+          <span class="br-label">Weekday total</span>
+          <span class="br-val" id="fl_bd_wday">€0</span>
+        </div>
+        <div class="br-row positive">
+          <span class="br-label">Weekend total</span>
+          <span class="br-val" id="fl_bd_wknd">€0</span>
+        </div>
+        <div class="br-row positive">
+          <span class="br-label">Night total</span>
+          <span class="br-val" id="fl_bd_night">€0</span>
+        </div>
+        <div class="br-row total">
+          <span class="br-label">Monthly gross</span>
+          <span class="br-val" id="fl_bd_total">€0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
 <footer>Lääkärisopimus 2025–2028 · Liite 3 · For simulation purposes only</footer>
 
 <script>
@@ -988,6 +1274,104 @@ function adj(key, delta) {
 document.querySelectorAll('input').forEach(el => el.addEventListener('change', render));
 // Personal supplement — live update on every keystroke
 document.getElementById('addon_personal').addEventListener('input', render);
+
+// ══════════════════════════════════════════════
+// FREELANCE MODE
+// ══════════════════════════════════════════════
+
+// Fixed shift values (euros per shift, pre-computed from spec)
+const FL_VALUES = {
+  wd8:   7*75.25 + 1*98.00,          // 624.75
+  wd12:  7*75.25 + 5*98.00,          // 1016.75
+  wd75:  4.5*98.00 + 3*104.00,       // 753.00
+  fri8:  7*75.25 + 1*98.00,          // 624.75
+  fri12: 7*75.25 + 5*98.00,          // 1016.75
+  fri75: 4.5*98.00 + 3*104.00,       // 753.00
+  sat8:  8*104.00,                    // 832.00
+  sat12: 12*104.00,                   // 1248.00
+  sat15: 14*104.00 + 1*117.00,       // 1573.00
+  sun8:  8*104.00,                    // 832.00
+  sun12: 12*104.00,                   // 1248.00
+  sun15: 14*104.00 + 1*117.00,       // 1573.00
+  ngt:   2*104.00 + 8*117.00,        // 1144.00
+};
+
+const FL_HOURS = {
+  wd8: 8, wd12: 12, wd75: 7.5,
+  fri8: 8, fri12: 12, fri75: 7.5,
+  sat8: 8, sat12: 12, sat15: 15,
+  sun8: 8, sun12: 12, sun15: 15,
+  ngt: 10,
+};
+
+// Freelance counters (separate from contract counters)
+const flCounts = {
+  wd8: 0, wd12: 0, wd75: 0,
+  fri8: 0, fri12: 0, fri75: 0,
+  sat8: 0, sat12: 0, sat15: 0,
+  sun8: 0, sun12: 0, sun15: 0,
+  ngt: 0,
+};
+
+function fladj(key, delta) {
+  flCounts[key] = Math.max(0, flCounts[key] + delta);
+  document.getElementById('fl_cnt_' + key).textContent = flCounts[key];
+  flRender();
+}
+
+function flCalc() {
+  let monthly = 0, totalShifts = 0, totalHours = 0;
+  let wdayTotal = 0, wkndTotal = 0, nightTotal = 0;
+
+  const wdayKeys = ['wd8','wd12','wd75','fri8','fri12','fri75'];
+  const wkndKeys = ['sat8','sat12','sat15','sun8','sun12','sun15'];
+  const nightKeys = ['ngt'];
+
+  for (const k of wdayKeys) {
+    const val = flCounts[k] * FL_VALUES[k];
+    wdayTotal += val; monthly += val;
+    totalShifts += flCounts[k];
+    totalHours  += flCounts[k] * FL_HOURS[k];
+  }
+  for (const k of wkndKeys) {
+    const val = flCounts[k] * FL_VALUES[k];
+    wkndTotal += val; monthly += val;
+    totalShifts += flCounts[k];
+    totalHours  += flCounts[k] * FL_HOURS[k];
+  }
+  for (const k of nightKeys) {
+    const val = flCounts[k] * FL_VALUES[k];
+    nightTotal += val; monthly += val;
+    totalShifts += flCounts[k];
+    totalHours  += flCounts[k] * FL_HOURS[k];
+  }
+
+  return { monthly, annual: monthly * 12, totalShifts, totalHours, wdayTotal, wkndTotal, nightTotal };
+}
+
+function flRender() {
+  const r = flCalc();
+  document.getElementById('fl_monthly').textContent  = fmtK(r.monthly);
+  document.getElementById('fl_annual').textContent   = fmtK(r.annual);
+  document.getElementById('fl_bd_shifts').textContent = r.totalShifts;
+  document.getElementById('fl_bd_hours').textContent  = r.totalHours.toFixed(1) + 'h';
+  document.getElementById('fl_bd_wday').textContent   = r.wdayTotal > 0  ? '+' + fmt(r.wdayTotal)  : fmt(0);
+  document.getElementById('fl_bd_wknd').textContent   = r.wkndTotal > 0  ? '+' + fmt(r.wkndTotal)  : fmt(0);
+  document.getElementById('fl_bd_night').textContent  = r.nightTotal > 0 ? '+' + fmt(r.nightTotal) : fmt(0);
+  document.getElementById('fl_bd_total').textContent  = fmt(r.monthly);
+}
+
+// Mode switching
+function switchMode() {
+  const isFreelance = document.querySelector('input[name=mode]:checked').value === 'freelance';
+  document.getElementById('mode-contract').style.display  = isFreelance ? 'none' : '';
+  document.getElementById('mode-freelance').style.display = isFreelance ? '' : 'none';
+}
+
+document.querySelectorAll('input[name=mode]').forEach(el => el.addEventListener('change', switchMode));
+
+// Initial freelance render (populates €/shift values)
+flRender();
 
 // Service worker
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
