@@ -180,6 +180,21 @@
     font-size: 1rem; font-weight: 600; color: var(--gray-800);
   }
 
+  /* Shift value badge */
+  .shift-val {
+    font-size: .72rem; font-weight: 600;
+    color: var(--green-mid); margin-top: 3px;
+  }
+
+  /* Section sub-label inside shifts card */
+  .shift-section {
+    font-size: .68rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--gray-400);
+    padding: 10px 0 4px; border-bottom: 1px solid var(--gray-100);
+    margin-bottom: 2px;
+  }
+  .shift-section:first-child { padding-top: 0; }
+
   /* Coverage bonus */
   .bonus-seg { display: flex; flex-direction: column; gap: 2px; }
 
@@ -298,9 +313,9 @@
           <span class="radio-label">None</span>
         </label>
         <label class="radio-row">
-          <input type="radio" name="exp" value="0.05">
+          <input type="radio" name="exp" value="0.03">
           <span class="radio-dot"></span>
-          <span class="radio-label">+5% <small>5 years at same hospital</small></span>
+          <span class="radio-label">+3% <small>5 years at same hospital</small></span>
         </label>
         <label class="radio-row">
           <input type="radio" name="exp" value="0.10">
@@ -409,46 +424,53 @@
     <div class="card-body">
       <div class="shifts-grid">
 
+        <!-- WEEKDAY -->
+        <div class="shift-section">Weekday</div>
+
         <div class="shift-row">
           <div class="shift-info">
-            <div class="shift-name">Saturday</div>
-            <div class="shift-detail">12h · ×2.25 all day</div>
+            <div class="shift-name">Weekday 12h</div>
+            <div class="shift-detail">08h–20h · 7h base + 5h eve</div>
+            <div class="shift-val" id="val_wd12">€0/shift</div>
           </div>
           <div class="shift-ctrl">
-            <button class="shift-btn" onclick="adj('sat',-1)">−</button>
-            <span class="shift-count" id="cnt_sat">0</span>
-            <button class="shift-btn" onclick="adj('sat',1)">+</button>
+            <button class="shift-btn" onclick="adj('wd12',-1)">−</button>
+            <span class="shift-count" id="cnt_wd12">0</span>
+            <button class="shift-btn" onclick="adj('wd12',1)">+</button>
           </div>
         </div>
 
         <div class="shift-row">
           <div class="shift-info">
-            <div class="shift-name">Sunday</div>
-            <div class="shift-detail">12h · ×2.25 all day</div>
+            <div class="shift-name">Weekday 8h</div>
+            <div class="shift-detail">08h–16h · 7h base + 1h eve</div>
+            <div class="shift-val" id="val_wd8">€0/shift</div>
           </div>
           <div class="shift-ctrl">
-            <button class="shift-btn" onclick="adj('sun',-1)">−</button>
-            <span class="shift-count" id="cnt_sun">0</span>
-            <button class="shift-btn" onclick="adj('sun',1)">+</button>
+            <button class="shift-btn" onclick="adj('wd8',-1)">−</button>
+            <span class="shift-count" id="cnt_wd8">0</span>
+            <button class="shift-btn" onclick="adj('wd8',1)">+</button>
           </div>
         </div>
 
         <div class="shift-row">
           <div class="shift-info">
-            <div class="shift-name">Mon – Thu</div>
-            <div class="shift-detail">5h base + 7h evening</div>
+            <div class="shift-name">Weekday 7.5h</div>
+            <div class="shift-detail">15h30–23h · 6.5h eve + 1h night</div>
+            <div class="shift-val" id="val_wd75">€0/shift</div>
           </div>
           <div class="shift-ctrl">
-            <button class="shift-btn" onclick="adj('mth',-1)">−</button>
-            <span class="shift-count" id="cnt_mth">0</span>
-            <button class="shift-btn" onclick="adj('mth',1)">+</button>
+            <button class="shift-btn" onclick="adj('wd75',-1)">−</button>
+            <span class="shift-count" id="cnt_wd75">0</span>
+            <button class="shift-btn" onclick="adj('wd75',1)">+</button>
           </div>
         </div>
 
         <div class="shift-row">
           <div class="shift-info">
             <div class="shift-name">Friday</div>
-            <div class="shift-detail">5h base + 3h eve + 4h wknd</div>
+            <div class="shift-detail">10h–22h · 5h base + 3h eve + 4h wknd</div>
+            <div class="shift-val" id="val_fri">€0/shift</div>
           </div>
           <div class="shift-ctrl">
             <button class="shift-btn" onclick="adj('fri',-1)">−</button>
@@ -457,10 +479,98 @@
           </div>
         </div>
 
+        <!-- SATURDAY -->
+        <div class="shift-section">Saturday</div>
+
         <div class="shift-row">
           <div class="shift-info">
-            <div class="shift-name">Night shift</div>
+            <div class="shift-name">Saturday 15h</div>
+            <div class="shift-detail">08h–23h · 14h wknd + 1h night</div>
+            <div class="shift-val" id="val_sat15">€0/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="adj('sat15',-1)">−</button>
+            <span class="shift-count" id="cnt_sat15">0</span>
+            <button class="shift-btn" onclick="adj('sat15',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Saturday 8h</div>
+            <div class="shift-detail">12h–20h · 8h wknd</div>
+            <div class="shift-val" id="val_sat8">€0/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="adj('sat8',-1)">−</button>
+            <span class="shift-count" id="cnt_sat8">0</span>
+            <button class="shift-btn" onclick="adj('sat8',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Saturday 12h</div>
+            <div class="shift-detail">10h–22h · 12h wknd</div>
+            <div class="shift-val" id="val_sat12">€0/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="adj('sat12',-1)">−</button>
+            <span class="shift-count" id="cnt_sat12">0</span>
+            <button class="shift-btn" onclick="adj('sat12',1)">+</button>
+          </div>
+        </div>
+
+        <!-- SUNDAY -->
+        <div class="shift-section">Sunday</div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Sunday 15h</div>
+            <div class="shift-detail">08h–23h · 14h wknd + 1h night</div>
+            <div class="shift-val" id="val_sun15">€0/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="adj('sun15',-1)">−</button>
+            <span class="shift-count" id="cnt_sun15">0</span>
+            <button class="shift-btn" onclick="adj('sun15',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Sunday 8h</div>
+            <div class="shift-detail">12h–20h · 8h wknd</div>
+            <div class="shift-val" id="val_sun8">€0/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="adj('sun8',-1)">−</button>
+            <span class="shift-count" id="cnt_sun8">0</span>
+            <button class="shift-btn" onclick="adj('sun8',1)">+</button>
+          </div>
+        </div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Sunday 12h</div>
+            <div class="shift-detail">10h–22h · 12h wknd</div>
+            <div class="shift-val" id="val_sun12">€0/shift</div>
+          </div>
+          <div class="shift-ctrl">
+            <button class="shift-btn" onclick="adj('sun12',-1)">−</button>
+            <span class="shift-count" id="cnt_sun12">0</span>
+            <button class="shift-btn" onclick="adj('sun12',1)">+</button>
+          </div>
+        </div>
+
+        <!-- NIGHT -->
+        <div class="shift-section">Night</div>
+
+        <div class="shift-row">
+          <div class="shift-info">
+            <div class="shift-name">Sunday night</div>
             <div class="shift-detail">Sun 20h→Mon 06h · 2h wknd + 8h night</div>
+            <div class="shift-val" id="val_ngt">€0/shift</div>
           </div>
           <div class="shift-ctrl">
             <button class="shift-btn" onclick="adj('ngt',-1)">−</button>
@@ -563,153 +673,174 @@
 <footer>Lääkärisopimus 2025–2028 · Liite 3 · For simulation purposes only</footer>
 
 <script>
-// --- State ---
+// --- Constants ---
 const BASE = { '3A': 7370, '3B': 7800, '3C': 8507.50 };
-const MONTHLY_HOURS = 165.75; // 38.25 × 52/12
+const MONTHLY_HOURS     = 165.75; // 38.25h/week × 52/12
 const EMBEDDED_HOURS_100 = 82.33;
 const EMBEDDED_HOURS_80  = 65.86;
 
-const counts = { sat: 0, sun: 0, mth: 0, fri: 0, ngt: 0 };
+// All shift keys
+const counts = {
+  wd12: 0, wd8: 0, wd75: 0,           // weekday
+  fri: 0,                               // friday
+  sat15: 0, sat8: 0, sat12: 0,         // saturday
+  sun15: 0, sun8: 0, sun12: 0,         // sunday
+  ngt: 0,                               // sunday night
+};
 
-function getContract() {
-  return document.querySelector('input[name=contract]:checked').value; // '100' or '80'
-}
-function getGroup() {
-  return document.querySelector('input[name=group]:checked').value;
-}
-function getExp() {
-  return parseFloat(document.querySelector('input[name=exp]:checked').value);
-}
+// --- Getters ---
+function getContract() { return document.querySelector('input[name=contract]:checked').value; }
+function getGroup()    { return document.querySelector('input[name=group]:checked').value; }
+function getExp()      { return parseFloat(document.querySelector('input[name=exp]:checked').value); }
 function getRaises() {
-  const r2026 = document.getElementById('raise2026').checked ? 0.0227 : 0;
-  const r2027 = document.getElementById('raise2027').checked ? 0.0200 : 0;
-  return { r2026, r2027 };
+  return {
+    r2026: document.getElementById('raise2026').checked ? 0.0227 : 0,
+    r2027: document.getElementById('raise2027').checked ? 0.0200 : 0,
+  };
 }
 function getAddons() {
-  const t = document.getElementById('addon_teaching').checked ? 300 : 0;
-  const s = document.getElementById('addon_safety').checked ? 105 : 0;
-  const q = document.getElementById('addon_quality').checked ? 105 : 0;
-  return t + s + q;
+  return (document.getElementById('addon_teaching').checked ? 300 : 0)
+       + (document.getElementById('addon_safety').checked   ? 105 : 0)
+       + (document.getElementById('addon_quality').checked  ? 105 : 0);
 }
-function getBonus() {
-  return parseFloat(document.querySelector('input[name=bonus]:checked').value);
-}
+function getBonus() { return parseFloat(document.querySelector('input[name=bonus]:checked').value); }
 
-// Full calculated base: group_base × exp × raises — used for hourly rate & shift math.
-// Contract % NEVER touches this value.
+// --- Base calculations ---
+// Full calc base = group_base × exp × raises. Hourly rate always derived from this.
+// Contract % NEVER affects hourly rate or shift values.
 function fullCalcBase() {
-  const base = BASE[getGroup()];
-  const exp = getExp();
   const { r2026, r2027 } = getRaises();
-  let sal = base * (1 + exp);
-  sal = sal * (1 + r2026);
-  sal = sal * (1 + r2027);
-  return sal;
+  return BASE[getGroup()] * (1 + getExp()) * (1 + r2026) * (1 + r2027);
 }
-
-// Base actually received in salary: applies contract %.
+// Base received = fullCalcBase × contract factor (0.80 or 1.00)
 function baseReceived() {
-  const factor = getContract() === '80' ? 0.80 : 1.00;
-  return fullCalcBase() * factor;
+  return fullCalcBase() * (getContract() === '80' ? 0.80 : 1.00);
 }
+// Hourly rate always from full calc base
+function hourlyRate() { return fullCalcBase() / MONTHLY_HOURS; }
 
-// Hourly rate is always derived from full calc base — never from contract-reduced base.
-function hourlyRate() {
-  return fullCalcBase() / MONTHLY_HOURS;
-}
-
+// --- Shift value formulas (per single shift) ---
+// Returns an object with euro value for each shift type at hourly rate h.
 function shiftValues(h) {
   return {
-    sat:  12 * h * 2.25,
-    sun:  12 * h * 2.25,
-    mth:  5 * h * 1.00 + 7 * h * 1.75,
-    fri:  5 * h * 1.00 + 3 * h * 1.75 + 4 * h * 2.25,
-    ngt:  2 * h * 2.25 + 8 * h * 3.00,
+    // Weekday
+    wd12:  7*h*1.00 + 5*h*1.75,                    // 08h–15h base, 15h–20h eve
+    wd8:   7*h*1.00 + 1*h*1.75,                    // 08h–15h base, 15h–16h eve
+    wd75:  6.5*h*1.75 + 1*h*3.00,                  // 15h30–22h eve, 22h–23h night
+    // Friday
+    fri:   5*h*1.00 + 3*h*1.75 + 4*h*2.25,         // 10h–15h base, 15h–18h eve, 18h–22h wknd
+    // Saturday
+    sat15: 14*h*2.25 + 1*h*3.00,                   // 08h–22h wknd, 22h–23h night
+    sat8:  8*h*2.25,                                 // 12h–20h wknd
+    sat12: 12*h*2.25,                               // 10h–22h wknd
+    // Sunday
+    sun15: 14*h*2.25 + 1*h*3.00,                   // 08h–22h wknd, 22h–23h night
+    sun8:  8*h*2.25,                                 // 12h–20h wknd
+    sun12: 12*h*2.25,                               // 10h–22h wknd
+    // Night
+    ngt:   2*h*2.25 + 8*h*3.00,                    // Sun 20h–22h wknd, 22h–06h night
   };
 }
 
+// --- Main calc ---
 function calc() {
   const is80 = getContract() === '80';
   const embeddedHours = is80 ? EMBEDDED_HOURS_80 : EMBEDDED_HOURS_100;
 
-  const br = baseReceived();          // salary line (may be 80%-reduced)
-  const h  = hourlyRate();            // always full-base hourly rate
+  const br = baseReceived();
+  const h  = hourlyRate();
   const sv = shiftValues(h);
 
-  const embedded     = embeddedHours * h;
-  const clinicalValue = counts.sat * sv.sat + counts.sun * sv.sun +
-                        counts.mth * sv.mth + counts.fri * sv.fri + counts.ngt * sv.ngt;
+  const embedded = embeddedHours * h;
+
+  // Sum all shifts
+  const clinicalValue =
+    counts.wd12  * sv.wd12  + counts.wd8   * sv.wd8   + counts.wd75  * sv.wd75  +
+    counts.fri   * sv.fri   +
+    counts.sat15 * sv.sat15 + counts.sat8  * sv.sat8  + counts.sat12 * sv.sat12 +
+    counts.sun15 * sv.sun15 + counts.sun8  * sv.sun8  + counts.sun12 * sv.sun12 +
+    counts.ngt   * sv.ngt;
+
   const addons = getAddons();
   const bonus  = getBonus();
 
   const monthly      = br - embedded + clinicalValue + addons + bonus;
-  const holidayMonth = br;            // holiday month = base received only
+  const holidayMonth = br;
   const lomaraha     = br * 0.60;
   const annual       = monthly * 11 + holidayMonth + lomaraha;
 
-  return { br, h, embedded, embeddedHours, clinicalValue, addons, bonus, monthly, holidayMonth, lomaraha, annual };
+  return { br, h, sv, embedded, embeddedHours, clinicalValue, addons, bonus, monthly, holidayMonth, lomaraha, annual };
 }
 
-function fmt(n, prefix = '€') {
-  return prefix + n.toLocaleString('fi-FI', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-function fmtK(n) {
-  return '€' + n.toLocaleString('fi-FI', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-}
+// --- Formatting ---
+function fmt(n)  { return '€' + n.toLocaleString('fi-FI', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function fmtK(n) { return '€' + n.toLocaleString('fi-FI', { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
+function fmtShift(n) { return fmt(n) + '/shift'; }
 
+// --- Render ---
 function render() {
   const r = calc();
-  const h = r.h; // always full-base hourly rate
+  const h = r.h;
+  const sv = r.sv;
 
-  // Contract info pill
+  // Contract info
   const is80 = getContract() === '80';
   document.getElementById('contract_info').textContent = is80
     ? '~30.8h/week · 65.86h/month embedded'
     : '~38.5h/week · 82.33h/month embedded';
 
-  // Live rates — always derived from full hourly rate, unaffected by contract %
+  // Live rates (always full hourly rate)
   document.getElementById('rate_base').textContent  = fmt(h * 1.00);
   document.getElementById('rate_eve').textContent   = fmt(h * 1.75);
   document.getElementById('rate_wknd').textContent  = fmt(h * 2.25);
   document.getElementById('rate_night').textContent = fmt(h * 3.00);
 
+  // Per-shift values
+  document.getElementById('val_wd12').textContent  = fmtShift(sv.wd12);
+  document.getElementById('val_wd8').textContent   = fmtShift(sv.wd8);
+  document.getElementById('val_wd75').textContent  = fmtShift(sv.wd75);
+  document.getElementById('val_fri').textContent   = fmtShift(sv.fri);
+  document.getElementById('val_sat15').textContent = fmtShift(sv.sat15);
+  document.getElementById('val_sat8').textContent  = fmtShift(sv.sat8);
+  document.getElementById('val_sat12').textContent = fmtShift(sv.sat12);
+  document.getElementById('val_sun15').textContent = fmtShift(sv.sun15);
+  document.getElementById('val_sun8').textContent  = fmtShift(sv.sun8);
+  document.getElementById('val_sun12').textContent = fmtShift(sv.sun12);
+  document.getElementById('val_ngt').textContent   = fmtShift(sv.ngt);
+
   // Results hero
   document.getElementById('res_monthly').textContent = fmtK(r.monthly);
   document.getElementById('res_annual').textContent  = fmtK(r.annual);
 
-  // Breakdown monthly
+  // Monthly breakdown
   document.getElementById('bd_embedded_label').textContent = `Embedded clinical (${r.embeddedHours}h)`;
   document.getElementById('bd_base').textContent     = fmt(r.br);
   document.getElementById('bd_embedded').textContent = '−' + fmt(r.embedded);
   document.getElementById('bd_clinical').textContent = '+' + fmt(r.clinicalValue);
   document.getElementById('bd_addons').textContent   = r.addons > 0 ? '+' + fmt(r.addons) : fmt(0);
-  document.getElementById('bd_bonus').textContent    = r.bonus > 0 ? '+' + fmt(r.bonus) : fmt(0);
+  document.getElementById('bd_bonus').textContent    = r.bonus > 0  ? '+' + fmt(r.bonus)  : fmt(0);
   document.getElementById('bd_total').textContent    = fmt(r.monthly);
 
-  // Breakdown annual
+  // Annual breakdown
   document.getElementById('bd_11m').textContent      = fmt(r.monthly * 11);
   document.getElementById('bd_holmonth').textContent = fmt(r.holidayMonth);
   document.getElementById('bd_lomaraha').textContent = '+' + fmt(r.lomaraha);
   document.getElementById('bd_annual').textContent   = fmt(r.annual);
 }
 
+// --- Counter adjust ---
 function adj(key, delta) {
   counts[key] = Math.max(0, counts[key] + delta);
   document.getElementById('cnt_' + key).textContent = counts[key];
   render();
 }
 
-// Attach listeners to all inputs
-document.querySelectorAll('input').forEach(el => {
-  el.addEventListener('change', render);
-});
+// Attach listeners to all radio/checkbox inputs
+document.querySelectorAll('input').forEach(el => el.addEventListener('change', render));
 
 // Service worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js');
-}
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
 
-// Initial render
 render();
 </script>
 </body>
