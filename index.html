@@ -195,6 +195,34 @@
   }
   .shift-section:first-child { padding-top: 0; }
 
+  /* Clinical hours tracker */
+  .hours-summary {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .hours-count {
+    font-size: 1.4rem; font-weight: 700; letter-spacing: -.02em; color: var(--gray-800);
+  }
+  .hours-req { font-size: .8rem; color: var(--gray-400); }
+  .progress-track {
+    height: 10px; background: var(--gray-100); border-radius: 99px; overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .progress-fill {
+    height: 100%; border-radius: 99px;
+    transition: width .3s ease, background .3s ease;
+  }
+  .progress-fill.red   { background: #ef4444; }
+  .progress-fill.amber { background: #f59e0b; }
+  .progress-fill.green { background: var(--green-mid); }
+  .hours-status {
+    font-size: .78rem; color: var(--gray-600); line-height: 1.4;
+  }
+  .hours-motivational {
+    font-size: .75rem; color: var(--gray-400); font-style: italic;
+    margin-top: 5px; line-height: 1.4;
+  }
+
   /* Coverage bonus */
   .bonus-seg { display: flex; flex-direction: column; gap: 2px; }
 
@@ -612,7 +640,23 @@
     </div>
   </div>
 
-  <!-- 7. Coverage bonus -->
+  <!-- 7. Clinical hours tracker -->
+  <div class="card">
+    <div class="card-header">Clinical Hours This Month</div>
+    <div class="card-body">
+      <div class="hours-summary">
+        <span class="hours-count"><span id="hrs_selected">0</span>h / <span id="hrs_required">82.33</span>h</span>
+        <span class="hours-req">required</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill green" id="hrs_bar" style="width:0%"></div>
+      </div>
+      <div class="hours-status" id="hrs_status"></div>
+      <div class="hours-motivational" id="hrs_motivational"></div>
+    </div>
+  </div>
+
+  <!-- 8. Coverage bonus -->
   <div class="card">
     <div class="card-header">Coverage Bonus (one-time)</div>
     <div class="card-body">
@@ -773,6 +817,19 @@ function shiftValues(h) {
   };
 }
 
+// --- Hours per shift (for clinical hours tracker) ---
+const SHIFT_HOURS = {
+  wd12: 12, wd8: 8, wd75: 7.5,
+  fri8: 8,  fri75: 7.5, fri12: 12,
+  sat15: 15, sat8: 8, sat12: 12,
+  sun15: 15, sun8: 8, sun12: 12,
+  ngt: 10,
+};
+
+function totalSelectedHours() {
+  return Object.keys(counts).reduce((sum, k) => sum + counts[k] * (SHIFT_HOURS[k] || 0), 0);
+}
+
 // --- Main calc ---
 function calc() {
   const is80 = getContract() === '80';
@@ -840,6 +897,33 @@ function render() {
   document.getElementById('val_sun8').textContent  = fmtShift(sv.sun8);
   document.getElementById('val_sun12').textContent = fmtShift(sv.sun12);
   document.getElementById('val_ngt').textContent   = fmtShift(sv.ngt);
+
+  // Clinical hours tracker
+  const minHours = is80 ? EMBEDDED_HOURS_80 : EMBEDDED_HOURS_100;
+  const selHours = totalSelectedHours();
+  const pct      = selHours / minHours;
+  const fillPct  = Math.min(pct * 100, 100).toFixed(1);
+  const color    = pct < 0.8 ? 'red' : pct < 1.0 ? 'amber' : 'green';
+  const bar      = document.getElementById('hrs_bar');
+  bar.style.width = fillPct + '%';
+  bar.className   = 'progress-fill ' + color;
+  document.getElementById('hrs_selected').textContent = +selHours.toFixed(2);
+  document.getElementById('hrs_required').textContent = minHours;
+  const contract  = is80 ? '80' : '100';
+  let statusText, motivText = '';
+  if (pct >= 1.2) {
+    const surplus = (selHours - minHours).toFixed(2);
+    statusText = `✅ ${selHours.toFixed(2)}h selected — ${surplus}h above minimum`;
+    motivText  = 'You are doing great, Dr. Katariina. And I\'m so proud of you! 🌿';
+  } else if (pct >= 1.0) {
+    statusText = `✅ ${selHours.toFixed(2)}h selected — contract minimum met`;
+    motivText  = 'You are doing great, Dr. Katariina. And I\'m so proud of you! 🌿';
+  } else {
+    const gap = (minHours - selHours).toFixed(2);
+    statusText = `⚠️ ${selHours.toFixed(2)}h selected — ${gap}h below your ${minHours}h minimum (${contract}% contract)`;
+  }
+  document.getElementById('hrs_status').textContent      = statusText;
+  document.getElementById('hrs_motivational').textContent = motivText;
 
   // Results hero
   document.getElementById('res_monthly').textContent = fmtK(r.monthly);
