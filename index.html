@@ -413,6 +413,34 @@
           </span>
           <span class="check-label">Laatu vastaava <small>Quality supervisor · +€105/month</small></span>
         </label>
+        <label class="check-row">
+          <input type="checkbox" id="addon_oncall">
+          <span class="check-box">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="check-label">Päivystyslistavastaava <small>On-call list manager · +€209.67/month</small></span>
+        </label>
+        <label class="check-row">
+          <input type="checkbox" id="addon_placement">
+          <span class="check-box">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="check-label">Sijoituslistavastaava <small>Substitution / placement list manager · +€209.67/month</small></span>
+        </label>
+        <div class="check-row" style="cursor:default;">
+          <div style="display:flex;flex-direction:column;flex:1;gap:4px;">
+            <span class="check-label" style="margin-bottom:0;">Henkilökohtainen lisä <small>Personal salary supplement</small></span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <input type="number" id="addon_personal" min="0" step="0.01" placeholder="0"
+                style="width:110px;border:1.5px solid var(--gray-200);border-radius:8px;padding:6px 10px;font-size:.9rem;font-family:inherit;color:var(--gray-800);outline:none;-webkit-appearance:none;">
+              <span style="font-size:.8rem;color:var(--gray-400);">€/month</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -772,9 +800,13 @@ function getRaises() {
   };
 }
 function getAddons() {
-  return (document.getElementById('addon_teaching').checked ? 300 : 0)
-       + (document.getElementById('addon_safety').checked   ? 105 : 0)
-       + (document.getElementById('addon_quality').checked  ? 105 : 0);
+  const personal = parseFloat(document.getElementById('addon_personal').value) || 0;
+  return (document.getElementById('addon_teaching').checked  ? 300    : 0)
+       + (document.getElementById('addon_safety').checked    ? 105    : 0)
+       + (document.getElementById('addon_quality').checked   ? 105    : 0)
+       + (document.getElementById('addon_oncall').checked    ? 209.67 : 0)
+       + (document.getElementById('addon_placement').checked ? 209.67 : 0)
+       + personal;
 }
 function getBonus() { return parseFloat(document.querySelector('input[name=bonus]:checked').value); }
 
@@ -914,10 +946,10 @@ function render() {
   if (pct >= 1.2) {
     const surplus = (selHours - minHours).toFixed(2);
     statusText = `✅ ${selHours.toFixed(2)}h selected — ${surplus}h above minimum`;
-    motivText  = 'You are doing great, Dr. Katariina. And I\'m so proud of you! 🌿';
+    motivText  = 'You are doing great! 🌿';
   } else if (pct >= 1.0) {
     statusText = `✅ ${selHours.toFixed(2)}h selected — contract minimum met`;
-    motivText  = 'You are doing great, Dr. Katariina. And I\'m so proud of you! 🌿';
+    motivText  = 'You are doing great! 🌿';
   } else {
     const gap = (minHours - selHours).toFixed(2);
     statusText = `⚠️ ${selHours.toFixed(2)}h selected — ${gap}h below your ${minHours}h minimum (${contract}% contract)`;
@@ -954,6 +986,8 @@ function adj(key, delta) {
 
 // Attach listeners to all radio/checkbox inputs
 document.querySelectorAll('input').forEach(el => el.addEventListener('change', render));
+// Personal supplement — live update on every keystroke
+document.getElementById('addon_personal').addEventListener('input', render);
 
 // Service worker
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
