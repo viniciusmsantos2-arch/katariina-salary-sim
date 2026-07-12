@@ -19,7 +19,6 @@
     --green-mid: #2d8a5e;
     --amber: #b45309;
     --amber-light: #fef3c7;
-    --amber-mid: #d97706;
     --gray-50: #f9fafb;
     --gray-100: #f3f4f6;
     --gray-200: #e5e7eb;
@@ -36,7 +35,6 @@
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
     background: var(--gray-100);
     color: var(--gray-800);
-    padding-bottom: env(safe-area-inset-bottom, 0);
     min-height: 100vh;
   }
 
@@ -47,9 +45,45 @@
     padding-top: calc(20px + env(safe-area-inset-top, 0));
   }
   header h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -.02em; }
-  header p { font-size: .75rem; opacity: .75; margin-top: 2px; }
+  header p  { font-size: .75rem; opacity: .75; margin-top: 2px; }
 
-  main { padding: 16px; display: flex; flex-direction: column; gap: 14px; padding-bottom: 8px; }
+  /* Tab nav */
+  .tab-nav {
+    background: var(--green);
+    display: flex;
+    padding: 0 16px 14px;
+    gap: 4px;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 10px 4px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255,255,255,.15);
+    color: rgba(255,255,255,.75);
+    font-size: .83rem;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background .15s, color .15s, box-shadow .15s;
+    min-height: 44px;
+    font-family: inherit;
+  }
+  .tab-btn.active {
+    background: #fff;
+    color: var(--green);
+    box-shadow: 0 1px 4px rgba(0,0,0,.15);
+  }
+
+  main {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-bottom: 96px;
+    max-width: 560px;
+    margin: 0 auto;
+  }
 
   .card {
     background: #fff;
@@ -57,7 +91,6 @@
     box-shadow: var(--shadow);
     overflow: hidden;
   }
-
   .card-header {
     padding: 14px 16px 10px;
     font-size: .7rem;
@@ -67,7 +100,6 @@
     color: var(--gray-400);
     border-bottom: 1px solid var(--gray-100);
   }
-
   .card-body { padding: 14px 16px; }
 
   /* Segmented control */
@@ -85,8 +117,7 @@
   }
   .seg input[type=radio] { display: none; }
   .seg input[type=radio]:checked + label {
-    background: #fff;
-    color: var(--green);
+    background: #fff; color: var(--green);
     box-shadow: 0 1px 4px rgba(0,0,0,.12);
   }
 
@@ -141,52 +172,57 @@
   .check-label { font-size: .9rem; color: var(--gray-800); flex: 1; }
   .check-label small { display: block; font-size: .75rem; color: var(--gray-400); margin-top: 1px; }
 
-  /* Live rates */
-  .rates-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 10px;
+  /* Preset buttons */
+  .preset-grid { display: flex; gap: 8px; }
+  .preset-btn {
+    flex: 1;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 10px;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    font-family: inherit;
+    font-size: .78rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 10px 4px;
+    min-height: 54px;
+    -webkit-tap-highlight-color: transparent;
+    transition: background .12s, border-color .12s, color .12s;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
   }
-  .rate-cell {
-    background: var(--gray-50); border-radius: 10px; padding: 10px 12px;
-  }
-  .rate-cell .rate-label { font-size: .68rem; color: var(--gray-400); text-transform: uppercase; letter-spacing: .05em; }
-  .rate-cell .rate-value { font-size: 1.05rem; font-weight: 700; color: var(--green); margin-top: 2px; }
-  .rate-cell .rate-sub { font-size: .7rem; color: var(--gray-400); margin-top: 1px; }
+  .preset-btn small { font-size: .65rem; font-weight: 400; color: var(--gray-400); line-height: 1.3; text-align: center; }
+  .preset-btn:active { background: var(--green-light); border-color: var(--green); color: var(--green); }
 
   /* Shift counters */
   .shifts-grid { display: flex; flex-direction: column; gap: 2px; }
   .shift-row {
     display: flex; align-items: center;
-    padding: 8px 0; border-bottom: 1px solid var(--gray-100);
-    min-height: 52px;
+    padding: 7px 0; border-bottom: 1px solid var(--gray-100);
+    min-height: 48px;
   }
   .shift-row:last-child { border-bottom: none; }
   .shift-info { flex: 1; }
-  .shift-name { font-size: .9rem; font-weight: 500; }
-  .shift-detail { font-size: .72rem; color: var(--gray-400); margin-top: 2px; }
-  .shift-ctrl { display: flex; align-items: center; gap: 0; }
+  .shift-row-top {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 6px;
+  }
+  .shift-name   { font-size: .9rem; font-weight: 500; }
+  .shift-val    { font-size: .78rem; font-weight: 600; color: var(--green-mid); white-space: nowrap; }
+  .shift-detail { font-size: .7rem; color: var(--gray-400); margin-top: 1px; }
+  .shift-ctrl   { display: flex; align-items: center; margin-left: 8px; }
   .shift-btn {
     width: 36px; height: 36px; border-radius: 50%;
     border: 1.5px solid var(--gray-200); background: #fff;
-    font-size: 1.1rem; font-weight: 400; color: var(--gray-600);
+    font-size: 1.1rem; color: var(--gray-600);
     cursor: pointer; display: flex; align-items: center; justify-content: center;
     -webkit-tap-highlight-color: transparent;
-    transition: background .1s, border-color .1s;
+    transition: background .1s;
     min-width: 44px; min-height: 44px;
   }
   .shift-btn:active { background: var(--gray-100); }
   .shift-count {
-    width: 36px; text-align: center;
+    width: 32px; text-align: center;
     font-size: 1rem; font-weight: 600; color: var(--gray-800);
   }
-
-  /* Shift value badge */
-  .shift-val {
-    font-size: .72rem; font-weight: 600;
-    color: var(--green-mid); margin-top: 3px;
-  }
-
-  /* Section sub-label inside shifts card */
   .shift-section {
     font-size: .68rem; font-weight: 600; text-transform: uppercase;
     letter-spacing: .06em; color: var(--gray-400);
@@ -195,99 +231,23 @@
   }
   .shift-section:first-child { padding-top: 0; }
 
-  /* Freelance comparison section inside contract results */
-  .cmp-section {
-    border-top: 1px solid rgba(255,255,255,.15);
-    margin-top: 12px; padding-top: 12px;
-  }
-  .cmp-title {
-    font-size: .65rem; opacity: .6; text-transform: uppercase;
-    letter-spacing: .07em; margin-bottom: 8px;
-  }
-  .cmp-row {
-    font-size: .8rem; opacity: .85; line-height: 1.5; margin-bottom: 2px;
-  }
-  .cmp-diff {
-    font-size: .88rem; font-weight: 700; margin-top: 6px;
-  }
-  .cmp-diff.up   { color: #6ee7b7; }
-  .cmp-diff.down { color: #fcd34d; }
-  .cmp-annual {
-    font-size: .78rem; opacity: .75; margin-top: 2px;
-  }
-
-  /* Mode toggle (top of page) */
-  .mode-toggle-wrap {
-    background: var(--green);
-    padding: 0 16px 14px;
-  }
-  .mode-toggle {
-    display: flex; background: rgba(255,255,255,.15);
-    border-radius: 10px; padding: 3px; gap: 3px;
-  }
-  .mode-toggle input[type=radio] { display: none; }
-  .mode-toggle label {
-    flex: 1; text-align: center; padding: 10px 8px;
-    border-radius: 8px; font-size: .82rem; font-weight: 600;
-    cursor: pointer; color: rgba(255,255,255,.75);
-    -webkit-tap-highlight-color: transparent;
-    transition: background .15s, color .15s, box-shadow .15s;
-    min-height: 44px; display: flex; align-items: center; justify-content: center;
-    line-height: 1.2;
-  }
-  .mode-toggle input[type=radio]:checked + label {
-    background: #fff; color: var(--green);
-    box-shadow: 0 1px 4px rgba(0,0,0,.15);
-  }
-
-  /* Freelance shifts card sections */
-  .fl-section {
-    font-size: .68rem; font-weight: 600; text-transform: uppercase;
-    letter-spacing: .06em; color: var(--gray-400);
-    padding: 10px 0 4px; border-bottom: 1px solid var(--gray-100);
-    margin-bottom: 2px;
-  }
-  .fl-section:first-child { padding-top: 0; }
-
-  /* Freelance warning note */
-  .fl-warning {
-    background: var(--amber-light); border-radius: 10px;
-    padding: 10px 12px; font-size: .78rem; color: var(--amber);
-    line-height: 1.5; margin-top: 2px;
-  }
-
-  /* Clinical hours tracker */
+  /* Clinical hours */
   .hours-summary {
-    display: flex; justify-content: space-between; align-items: baseline;
-    margin-bottom: 10px;
+    display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px;
   }
-  .hours-count {
-    font-size: 1.4rem; font-weight: 700; letter-spacing: -.02em; color: var(--gray-800);
-  }
-  .hours-req { font-size: .8rem; color: var(--gray-400); }
+  .hours-count { font-size: 1.4rem; font-weight: 700; letter-spacing: -.02em; color: var(--gray-800); }
+  .hours-req   { font-size: .8rem; color: var(--gray-400); }
   .progress-track {
-    height: 10px; background: var(--gray-100); border-radius: 99px; overflow: hidden;
-    margin-bottom: 8px;
+    height: 10px; background: var(--gray-100); border-radius: 99px; overflow: hidden; margin-bottom: 8px;
   }
-  .progress-fill {
-    height: 100%; border-radius: 99px;
-    transition: width .3s ease, background .3s ease;
-  }
+  .progress-fill { height: 100%; border-radius: 99px; transition: width .3s ease, background .3s ease; }
   .progress-fill.red   { background: #ef4444; }
   .progress-fill.amber { background: #f59e0b; }
   .progress-fill.green { background: var(--green-mid); }
-  .hours-status {
-    font-size: .78rem; color: var(--gray-600); line-height: 1.4;
-  }
-  .hours-motivational {
-    font-size: .75rem; color: var(--gray-400); font-style: italic;
-    margin-top: 5px; line-height: 1.4;
-  }
+  .hours-status       { font-size: .78rem; color: var(--gray-600); line-height: 1.4; }
+  .hours-motivational { font-size: .75rem; color: var(--gray-400); font-style: italic; margin-top: 5px; line-height: 1.4; }
 
-  /* Coverage bonus */
-  .bonus-seg { display: flex; flex-direction: column; gap: 2px; }
-
-  /* Results */
+  /* Results card */
   .results-card {
     background: var(--green);
     color: #fff;
@@ -295,52 +255,137 @@
     box-shadow: var(--shadow);
     overflow: hidden;
   }
-  .results-hero {
-    padding: 20px 20px 16px;
-    border-bottom: 1px solid rgba(255,255,255,.15);
-  }
-  .results-hero .label { font-size: .72rem; opacity: .75; text-transform: uppercase; letter-spacing: .06em; }
-  .results-hero .amount {
-    font-size: 2.4rem; font-weight: 700; letter-spacing: -.03em; margin-top: 4px;
-    line-height: 1;
-  }
-  .results-hero .sub { font-size: .85rem; opacity: .8; margin-top: 4px; }
+  .results-hero { padding: 20px 20px 16px; border-bottom: 1px solid rgba(255,255,255,.15); }
+  .results-hero .label  { font-size: .72rem; opacity: .75; text-transform: uppercase; letter-spacing: .06em; }
+  .results-hero .amount { font-size: 2.4rem; font-weight: 700; letter-spacing: -.03em; margin-top: 4px; line-height: 1; }
+  .results-hero .sub    { font-size: .85rem; opacity: .8; margin-top: 4px; }
+
+  /* Freelance comparison — always visible */
+  .cmp-always    { padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,.15); }
+  .cmp-title-sm  { font-size: .65rem; opacity: .6; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 6px; }
+  .cmp-row       { font-size: .82rem; opacity: .85; line-height: 1.5; margin-bottom: 2px; }
+  .cmp-diff      { font-size: .9rem; font-weight: 700; margin-top: 6px; }
+  .cmp-diff.up   { color: #6ee7b7; }
+  .cmp-diff.down { color: #fcd34d; }
+  .cmp-annual    { font-size: .78rem; opacity: .75; margin-top: 2px; }
 
   .results-annual {
     padding: 14px 20px;
     border-bottom: 1px solid rgba(255,255,255,.15);
     display: flex; align-items: baseline; gap: 8px;
   }
-  .results-annual .a-label { font-size: .8rem; opacity: .75; }
+  .results-annual .a-label  { font-size: .8rem; opacity: .75; }
   .results-annual .a-amount { font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em; }
 
-  .results-breakdown { padding: 14px 20px 18px; }
-  .breakdown-title { font-size: .68rem; opacity: .7; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
-  .breakdown-rows { display: flex; flex-direction: column; gap: 0; }
+  /* Details toggle button */
+  .details-toggle {
+    display: block;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 8px;
+    color: rgba(255,255,255,.9);
+    font-family: inherit;
+    font-size: .85rem;
+    font-weight: 600;
+    padding: 11px;
+    cursor: pointer;
+    margin: 14px 20px 0;
+    width: calc(100% - 40px);
+    -webkit-tap-highlight-color: transparent;
+    min-height: 44px;
+    text-align: center;
+  }
+
+  /* Breakdown (collapsible) */
+  .results-breakdown { padding: 14px 20px 4px; }
+  .breakdown-title   { font-size: .68rem; opacity: .7; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
+  .breakdown-rows    { display: flex; flex-direction: column; }
   .br-row {
     display: flex; justify-content: space-between; align-items: baseline;
     padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.08);
     font-size: .85rem;
   }
   .br-row:last-child { border-bottom: none; }
-  .br-row .br-label { opacity: .8; }
-  .br-row .br-val { font-weight: 600; }
+  .br-row .br-label  { opacity: .8; }
+  .br-row .br-val    { font-weight: 600; }
   .br-row.positive .br-val { color: #6ee7b7; }
   .br-row.negative .br-val { color: #fca5a5; }
-  .br-row.amber .br-val { color: #fcd34d; }
-  .br-row.total { border-top: 1px solid rgba(255,255,255,.2); margin-top: 4px; padding-top: 8px; }
-  .br-row.total .br-label { font-weight: 600; opacity: 1; }
-  .br-row.total .br-val { font-size: 1rem; color: #fff; }
+  .br-row.amber    .br-val { color: #fcd34d; }
+  .br-row.total    { border-top: 1px solid rgba(255,255,255,.2); margin-top: 4px; padding-top: 8px; }
+  .br-row.total .br-label  { font-weight: 600; opacity: 1; }
+  .br-row.total .br-val    { font-size: 1rem; color: #fff; }
+
+  /* Live rates inside details */
+  .details-rates         { padding: 14px 20px 4px; }
+  .details-rates .rates-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .details-rates .rate-cell  {
+    background: rgba(255,255,255,.1); border-radius: 10px; padding: 10px 12px;
+  }
+  .details-rates .rate-label { font-size: .68rem; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: .05em; }
+  .details-rates .rate-value { font-size: 1.05rem; font-weight: 700; color: #fff; margin-top: 2px; }
+  .details-rates .rate-sub   { font-size: .7rem; color: rgba(255,255,255,.5); margin-top: 1px; }
+
+  /* Fixed footer bar */
+  .footer-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--green);
+    color: #fff;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0));
+    box-shadow: 0 -2px 16px rgba(0,0,0,.18);
+    z-index: 100;
+  }
+  .footer-bar.visible     { display: flex; }
+  .footer-bar-info        { display: flex; flex-direction: column; gap: 1px; }
+  .footer-bar-label       { font-size: .68rem; opacity: .7; text-transform: uppercase; letter-spacing: .05em; }
+  .footer-bar-total       { font-size: 1.2rem; font-weight: 700; letter-spacing: -.02em; }
+  .footer-bar-btn {
+    background: rgba(255,255,255,.2);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-family: inherit;
+    font-size: .85rem;
+    font-weight: 600;
+    padding: 10px 16px;
+    cursor: pointer;
+    min-height: 44px;
+    -webkit-tap-highlight-color: transparent;
+    white-space: nowrap;
+  }
+  .footer-bar-btn:active { background: rgba(255,255,255,.3); }
+
+  .next-btn {
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: .95rem;
+    font-weight: 600;
+    padding: 14px;
+    width: 100%;
+    cursor: pointer;
+    min-height: 48px;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: var(--shadow);
+  }
 
   footer {
     text-align: center;
     padding: 16px;
     font-size: .7rem;
     color: var(--gray-400);
+    max-width: 560px;
+    margin: 0 auto;
   }
 
-  /* Utility */
-  .mt4 { margin-top: 4px; }
+  .mt4  { margin-top: 4px; }
+  .mt16 { margin-top: 16px; }
 </style>
 </head>
 <body>
@@ -350,763 +395,564 @@
   <p>Lääkärisopimus 2025–2028 · Liite 3</p>
 </header>
 
-<div class="mode-toggle-wrap">
-  <div class="mode-toggle">
-    <input type="radio" name="mode" id="mode_contract" value="contract" checked>
-    <label for="mode_contract">New Contract</label>
-    <input type="radio" name="mode" id="mode_freelance" value="freelance">
-    <label for="mode_freelance">Current Model · Freelance</label>
-  </div>
+<div class="tab-nav">
+  <button class="tab-btn active" id="tabn-0" onclick="showTab(0)">Contrato</button>
+  <button class="tab-btn"        id="tabn-1" onclick="showTab(1)">Plantões</button>
+  <button class="tab-btn"        id="tabn-2" onclick="showTab(2)">Resultado</button>
 </div>
 
-<main id="mode-contract">
+<main>
 
-  <!-- 01. Contract type -->
-  <div class="card">
-    <div class="card-header">Contract Type</div>
-    <div class="card-body">
-      <div class="seg">
-        <input type="radio" name="contract" id="c100" value="100" checked>
-        <label for="c100" style="flex-direction:column;gap:2px">
-          <span>100%</span>
-          <small style="font-size:.68rem;font-weight:400;opacity:.65">~38.5h/week</small>
-        </label>
-        <input type="radio" name="contract" id="c80" value="80">
-        <label for="c80" style="flex-direction:column;gap:2px">
-          <span>80%</span>
-          <small style="font-size:.68rem;font-weight:400;opacity:.65">~30.8h/week</small>
-        </label>
-      </div>
-      <div id="contract_info" style="margin-top:10px;padding:8px 10px;background:var(--gray-50);border-radius:8px;font-size:.75rem;color:var(--gray-600);line-height:1.4;">
-        ~38.5h/week · 82.33h clinical/month embedded
-      </div>
-    </div>
-  </div>
+  <!-- ═══ TAB 0: CONTRATO ═══ -->
+  <div class="tab-panel" id="panel-0">
 
-  <!-- 02. Salary group -->
-  <div class="card">
-    <div class="card-header">Salary Group</div>
-    <div class="card-body">
-      <div class="seg">
-        <input type="radio" name="group" id="g3a" value="3A">
-        <label for="g3a">3A<br><small style="font-size:.7rem;font-weight:400;opacity:.7">€7,370</small></label>
-
-        <input type="radio" name="group" id="g3b" value="3B" checked>
-        <label for="g3b">3B<br><small style="font-size:.7rem;font-weight:400;opacity:.7">€7,800</small></label>
-
-        <input type="radio" name="group" id="g3c" value="3C">
-        <label for="g3c">3C<br><small style="font-size:.7rem;font-weight:400;opacity:.7">€8,507.50</small></label>
+    <div class="card">
+      <div class="card-header">Contract Type</div>
+      <div class="card-body">
+        <div class="seg">
+          <input type="radio" name="contract" id="c100" value="100" checked>
+          <label for="c100" style="flex-direction:column;gap:2px">
+            <span>100%</span>
+            <small style="font-size:.68rem;font-weight:400;opacity:.65">~38.5h/week</small>
+          </label>
+          <input type="radio" name="contract" id="c80" value="80">
+          <label for="c80" style="flex-direction:column;gap:2px">
+            <span>80%</span>
+            <small style="font-size:.68rem;font-weight:400;opacity:.65">~30.8h/week</small>
+          </label>
+        </div>
+        <div id="contract_info" style="margin-top:10px;padding:8px 10px;background:var(--gray-50);border-radius:8px;font-size:.75rem;color:var(--gray-600);line-height:1.4;">
+          ~38.5h/week · 82.33h clinical/month embedded
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- 2. Experience supplement -->
-  <div class="card">
-    <div class="card-header">Experience Supplement</div>
-    <div class="card-body">
-      <div class="radio-group">
-        <label class="radio-row">
-          <input type="radio" name="exp" value="0" checked>
-          <span class="radio-dot"></span>
-          <span class="radio-label">None</span>
-        </label>
-        <label class="radio-row">
-          <input type="radio" name="exp" value="0.03">
-          <span class="radio-dot"></span>
-          <span class="radio-label">+3% <small>5 years at same hospital</small></span>
-        </label>
-        <label class="radio-row">
-          <input type="radio" name="exp" value="0.10">
-          <span class="radio-dot"></span>
-          <span class="radio-label">+10% <small>10+ years at same hospital</small></span>
-        </label>
+    <div class="card">
+      <div class="card-header">Salary Group</div>
+      <div class="card-body">
+        <div class="seg">
+          <input type="radio" name="group" id="g3a" value="3A">
+          <label for="g3a">3A<br><small style="font-size:.7rem;font-weight:400;opacity:.7">€7,370</small></label>
+          <input type="radio" name="group" id="g3b" value="3B" checked>
+          <label for="g3b">3B<br><small style="font-size:.7rem;font-weight:400;opacity:.7">€7,800</small></label>
+          <input type="radio" name="group" id="g3c" value="3C">
+          <label for="g3c">3C<br><small style="font-size:.7rem;font-weight:400;opacity:.7">€8,507.50</small></label>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- 3. Announced raises -->
-  <div class="card">
-    <div class="card-header">Announced Raises</div>
-    <div class="card-body">
-      <div class="check-group">
-        <label class="check-row">
-          <input type="checkbox" id="raise2026">
-          <span class="check-box">
-            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
-              <path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <span class="check-label">+2.27% <small>August 2026</small></span>
-        </label>
-        <label class="check-row">
-          <input type="checkbox" id="raise2027">
-          <span class="check-box">
-            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
-              <path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <span class="check-label">+2.00% <small>April 2027</small></span>
-        </label>
+    <div class="card">
+      <div class="card-header">Experience Supplement</div>
+      <div class="card-body">
+        <div class="radio-group">
+          <label class="radio-row">
+            <input type="radio" name="exp" value="0" checked>
+            <span class="radio-dot"></span>
+            <span class="radio-label">None</span>
+          </label>
+          <label class="radio-row">
+            <input type="radio" name="exp" value="0.03">
+            <span class="radio-dot"></span>
+            <span class="radio-label">+3% <small>5 years at same hospital</small></span>
+          </label>
+          <label class="radio-row">
+            <input type="radio" name="exp" value="0.10">
+            <span class="radio-dot"></span>
+            <span class="radio-label">+10% <small>10+ years at same hospital</small></span>
+          </label>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- 4. Add-ons -->
-  <div class="card">
-    <div class="card-header">Add-ons (Fixed)</div>
-    <div class="card-body">
-      <div class="check-group">
-        <label class="check-row">
-          <input type="checkbox" id="addon_teaching">
-          <span class="check-box">
-            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
-              <path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <span class="check-label">Vastuukouluttaja <small>Teaching supervisor · +€300/month</small></span>
-        </label>
-        <label class="check-row">
-          <input type="checkbox" id="addon_safety">
-          <span class="check-box">
-            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
-              <path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <span class="check-label">Potilasturvallisuusvastaava <small>Patient safety · +€105/month</small></span>
-        </label>
-        <label class="check-row">
-          <input type="checkbox" id="addon_quality">
-          <span class="check-box">
-            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
-              <path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <span class="check-label">Laatu vastaava <small>Quality supervisor · +€105/month</small></span>
-        </label>
-        <label class="check-row">
-          <input type="checkbox" id="addon_oncall">
-          <span class="check-box">
-            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
-              <path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <span class="check-label">Päivystyslistavastaava <small>On-call list manager · +€209.67/month</small></span>
-        </label>
-        <label class="check-row">
-          <input type="checkbox" id="addon_placement">
-          <span class="check-box">
-            <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
-              <path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <span class="check-label">Sijoituslistavastaava <small>Substitution / placement list manager · +€209.67/month</small></span>
-        </label>
-        <div class="check-row" style="cursor:default;">
-          <div style="display:flex;flex-direction:column;flex:1;gap:4px;">
-            <span class="check-label" style="margin-bottom:0;">Henkilökohtainen lisä <small>Personal salary supplement</small></span>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <input type="number" id="addon_personal" min="0" step="0.01" placeholder="0"
-                style="width:110px;border:1.5px solid var(--gray-200);border-radius:8px;padding:6px 10px;font-size:.9rem;font-family:inherit;color:var(--gray-800);outline:none;-webkit-appearance:none;">
-              <span style="font-size:.8rem;color:var(--gray-400);">€/month</span>
+    <div class="card">
+      <div class="card-header">Announced Raises</div>
+      <div class="card-body">
+        <div class="check-group">
+          <label class="check-row">
+            <input type="checkbox" id="raise2026">
+            <span class="check-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">+2.27% <small>August 2026</small></span>
+          </label>
+          <label class="check-row">
+            <input type="checkbox" id="raise2027">
+            <span class="check-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">+2.00% <small>April 2027</small></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Add-ons (Fixed)</div>
+      <div class="card-body">
+        <div class="check-group">
+          <label class="check-row">
+            <input type="checkbox" id="addon_teaching">
+            <span class="check-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">Vastuukouluttaja <small>Teaching supervisor · +€300/month</small></span>
+          </label>
+          <label class="check-row">
+            <input type="checkbox" id="addon_safety">
+            <span class="check-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">Potilasturvallisuusvastaava <small>Patient safety · +€105/month</small></span>
+          </label>
+          <label class="check-row">
+            <input type="checkbox" id="addon_quality">
+            <span class="check-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">Laatu vastaava <small>Quality supervisor · +€105/month</small></span>
+          </label>
+          <label class="check-row">
+            <input type="checkbox" id="addon_oncall">
+            <span class="check-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">Päivystyslistavastaava <small>On-call list manager · +€209.67/month</small></span>
+          </label>
+          <label class="check-row">
+            <input type="checkbox" id="addon_placement">
+            <span class="check-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check-label">Sijoituslistavastaava <small>Substitution / placement list manager · +€209.67/month</small></span>
+          </label>
+          <div class="check-row" style="cursor:default;">
+            <div style="display:flex;flex-direction:column;flex:1;gap:4px;">
+              <span class="check-label" style="margin-bottom:0;">Henkilökohtainen lisä <small>Personal salary supplement</small></span>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <input type="number" id="addon_personal" min="0" step="0.01" placeholder="0"
+                  style="width:110px;border:1.5px solid var(--gray-200);border-radius:8px;padding:6px 10px;font-size:.9rem;font-family:inherit;color:var(--gray-800);outline:none;-webkit-appearance:none;">
+                <span style="font-size:.8rem;color:var(--gray-400);">€/month</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- 5. Live rates -->
-  <div class="card">
-    <div class="card-header">Live Rates</div>
-    <div class="card-body">
-      <div class="rates-grid">
-        <div class="rate-cell">
-          <div class="rate-label">Base (daytime)</div>
-          <div class="rate-value" id="rate_base">€0.00</div>
-          <div class="rate-sub">×1.0 · 08h–15h (Mon–Fri)</div>
-        </div>
-        <div class="rate-cell">
-          <div class="rate-label">Evening</div>
-          <div class="rate-value" id="rate_eve">€0.00</div>
-          <div class="rate-sub">×2.1 · 15h–22h (Mon–Thu)</div>
-        </div>
-        <div class="rate-cell">
-          <div class="rate-label">Weekend/Holiday</div>
-          <div class="rate-value" id="rate_wknd">€0.00</div>
-          <div class="rate-sub">×2.7 · 08h–22h (Sat/Sun)</div>
-        </div>
-        <div class="rate-cell">
-          <div class="rate-label">Night</div>
-          <div class="rate-value" id="rate_night">€0.00</div>
-          <div class="rate-sub">×3.5 · 22h–24h (Fri/Sat/Sun)</div>
+    <button class="next-btn" onclick="showTab(1)">Próximo: Plantões →</button>
+
+  </div><!-- /panel-0 -->
+
+
+  <!-- ═══ TAB 1: PLANTÕES ═══ -->
+  <div class="tab-panel" id="panel-1" style="display:none">
+
+    <div class="card">
+      <div class="card-header">Presets de mês</div>
+      <div class="card-body">
+        <div class="preset-grid">
+          <button class="preset-btn" onclick="applyPreset('light')">
+            Tranquilo
+            <small>2×8h + 2×7.5h + 3×Sáb 8h</small>
+          </button>
+          <button class="preset-btn" onclick="applyPreset('typical')">
+            Típico
+            <small>2×7.5h + 3×Sáb 12h + 2×Dom 8h</small>
+          </button>
+          <button class="preset-btn" onclick="applyPreset('intense')">
+            Intenso
+            <small>2×8h + 2×7.5h + 3×Sáb 12h</small>
+          </button>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- 6. Shifts -->
-  <div class="card">
-    <div class="card-header">Shifts This Month</div>
-    <div class="card-body">
-      <div class="shifts-grid">
+    <div class="card">
+      <div class="card-header">Plantões deste mês</div>
+      <div class="card-body">
+        <div class="shifts-grid">
 
-        <!-- WEEKDAY -->
-        <div class="shift-section">Weekday</div>
+          <div class="shift-section">Weekday</div>
 
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Weekday 12h</div>
-            <div class="shift-detail">08h–20h · 7h base + 5h eve</div>
-            <div class="shift-val" id="val_wd12">€0/shift</div>
+          <div class="shift-row">
+            <div class="shift-info">
+              <div class="shift-row-top">
+                <span class="shift-name">Weekday 12h</span>
+                <span class="shift-val" id="val_wd12">€0/shift</span>
+              </div>
+              <div class="shift-detail">08h–20h · 7h base + 5h eve</div>
+            </div>
+            <div class="shift-ctrl">
+              <button class="shift-btn" onclick="adj('wd12',-1)">−</button>
+              <span class="shift-count" id="cnt_wd12">0</span>
+              <button class="shift-btn" onclick="adj('wd12',1)">+</button>
+            </div>
           </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="adj('wd12',-1)">−</button>
-            <span class="shift-count" id="cnt_wd12">0</span>
-            <button class="shift-btn" onclick="adj('wd12',1)">+</button>
+
+          <div class="shift-row">
+            <div class="shift-info">
+              <div class="shift-row-top">
+                <span class="shift-name">Weekday 8h</span>
+                <span class="shift-val" id="val_wd8">€0/shift</span>
+              </div>
+              <div class="shift-detail">08h–16h · 7h base + 1h eve</div>
+            </div>
+            <div class="shift-ctrl">
+              <button class="shift-btn" onclick="adj('wd8',-1)">−</button>
+              <span class="shift-count" id="cnt_wd8">0</span>
+              <button class="shift-btn" onclick="adj('wd8',1)">+</button>
+            </div>
           </div>
+
+          <div class="shift-row">
+            <div class="shift-info">
+              <div class="shift-row-top">
+                <span class="shift-name">Weekday 7.5h</span>
+                <span class="shift-val" id="val_wd75">€0/shift</span>
+              </div>
+              <div class="shift-detail">15h30–23h · 6.5h eve + 1h night</div>
+            </div>
+            <div class="shift-ctrl">
+              <button class="shift-btn" onclick="adj('wd75',-1)">−</button>
+              <span class="shift-count" id="cnt_wd75">0</span>
+              <button class="shift-btn" onclick="adj('wd75',1)">+</button>
+            </div>
+          </div>
+
+          <div class="shift-section">Friday</div>
+
+          <div class="shift-row">
+            <div class="shift-info">
+              <div class="shift-row-top">
+                <span class="shift-name">Friday 8h</span>
+                <span class="shift-val" id="val_fri8">€0/shift</span>
+              </div>
+              <div class="shift-detail">08h–16h · 7h base + 1h eve</div>
+            </div>
+            <div class="shift-ctrl">
+              <button class="shift-btn" onclick="adj('fri8',-1)">−</button>
+              <span class="shift-count" id="cnt_fri8">0</span>
+              <button class="shift-btn" onclick="adj('fri8',1)">+</button>
+            </div>
+          </div>
+
+          <div class="shift-row">
+            <div class="shift-info">
+              <div class="shift-row-top">
+                <span class="shift-name">Friday 7.5h</span>
+                <span class="shift-val" id="val_fri75">€0/shift</span>
+              </div>
+              <div class="shift-detail">15h30–23h · 2.5h eve + 4h wknd + 1h night</div>
+            </div>
+            <div class="shift-ctrl">
+              <button class="shift-btn" onclick="adj('fri75',-1)">−</button>
+              <span class="shift-count" id="cnt_fri75">0</span>
+              <button class="shift-btn" onclick="adj('fri75',1)">+</button>
+            </div>
+          </div>
+
+          <div class="shift-row">
+            <div class="shift-info">
+              <div class="shift-row-top">
+                <span class="shift-name">Friday 12h</span>
+                <span class="shift-val" id="val_fri12">€0/shift</span>
+              </div>
+              <div class="shift-detail">08h–20h · 7h base + 3h eve + 2h wknd</div>
+            </div>
+            <div class="shift-ctrl">
+              <button class="shift-btn" onclick="adj('fri12',-1)">−</button>
+              <span class="shift-count" id="cnt_fri12">0</span>
+              <button class="shift-btn" onclick="adj('fri12',1)">+</button>
+            </div>
+          </div>
+
+          <div class="shift-section">Saturday</div>
+
+          <div class="shift-row">
+            <div class="shift-info">
+              <div class="shift-row-top">
+                <span class="shift-name">Saturday 15h</span>
+                <span class="shift-val" id="val_sat15">€0/shift</span>
+              </div>
+              <div class="shift-detail">08h–23h · 14h wknd + 1h night</div>
+            </div>
+            <div class="shift-ctrl">
+              <button class="shift-btn" onclick="adj('sat15',-1)">−</button>
+              <span class="shift-count" id="cnt_sat15">0</span>
+              <button class="shift-btn" onclick="adj('sat15',1)">+</button>
+            </div>
+          </div>
+
+          <div class="shift-row">
+            <div class="shift-info">
+              <div class="shift-row-top">
+                <span class="shift-name">Saturday 8h</span>
+                <span class="shift-val" id="val_sat8">€0/shift</span>
+              </div>
+              <div class="shift-detail">12h–20h · 8h wknd</div>
+            </div>
+            <div class="shift-ctrl">
+              <button class="shift-btn" onclick="adj('sat8',-1)">−</button>
+              <span class="shift-count" id="cnt_sat8">0</span>
+              <button class="shift-btn" onclick="adj('sat8',1)">+</button>
+            </div>
+          </div>
+
+          <div class="shift-row">
+            <div class="shift-info">
+              <div class="shift-row-top">
+                <span class="shift-name">Saturday 12h</span>
+                <span class="shift-val" id="val_sat12">€0/shift</span>
+              </div>
+              <div class="shift-detail">10h–22h · 12h wknd</div>
+            </div>
+            <div class="shift-ctrl">
+              <button class="shift-btn" onclick="adj('sat12',-1)">−</button>
+              <span class="shift-count" id="cnt_sat12">0</span>
+              <button class="shift-btn" onclick="adj('sat12',1)">+</button>
+            </div>
+          </div>
+
+          <div class="shift-section">Sunday</div>
+
+          <div class="shift-row">
+            <div class="shift-info">
+              <div class="shift-row-top">
+                <span class="shift-name">Sunday 15h</span>
+                <span class="shift-val" id="val_sun15">€0/shift</span>
+              </div>
+              <div class="shift-detail">08h–23h · 14h wknd + 1h night</div>
+            </div>
+            <div class="shift-ctrl">
+              <button class="shift-btn" onclick="adj('sun15',-1)">−</button>
+              <span class="shift-count" id="cnt_sun15">0</span>
+              <button class="shift-btn" onclick="adj('sun15',1)">+</button>
+            </div>
+          </div>
+
+          <div class="shift-row">
+            <div class="shift-info">
+              <div class="shift-row-top">
+                <span class="shift-name">Sunday 8h</span>
+                <span class="shift-val" id="val_sun8">€0/shift</span>
+              </div>
+              <div class="shift-detail">12h–20h · 8h wknd</div>
+            </div>
+            <div class="shift-ctrl">
+              <button class="shift-btn" onclick="adj('sun8',-1)">−</button>
+              <span class="shift-count" id="cnt_sun8">0</span>
+              <button class="shift-btn" onclick="adj('sun8',1)">+</button>
+            </div>
+          </div>
+
+          <div class="shift-row">
+            <div class="shift-info">
+              <div class="shift-row-top">
+                <span class="shift-name">Sunday 12h</span>
+                <span class="shift-val" id="val_sun12">€0/shift</span>
+              </div>
+              <div class="shift-detail">10h–22h · 12h wknd</div>
+            </div>
+            <div class="shift-ctrl">
+              <button class="shift-btn" onclick="adj('sun12',-1)">−</button>
+              <span class="shift-count" id="cnt_sun12">0</span>
+              <button class="shift-btn" onclick="adj('sun12',1)">+</button>
+            </div>
+          </div>
+
+          <div class="shift-section">Night</div>
+
+          <div class="shift-row">
+            <div class="shift-info">
+              <div class="shift-row-top">
+                <span class="shift-name">Sunday night</span>
+                <span class="shift-val" id="val_ngt">€0/shift</span>
+              </div>
+              <div class="shift-detail">Sun 20h→Mon 06h · 2h wknd + 8h night</div>
+            </div>
+            <div class="shift-ctrl">
+              <button class="shift-btn" onclick="adj('ngt',-1)">−</button>
+              <span class="shift-count" id="cnt_ngt">0</span>
+              <button class="shift-btn" onclick="adj('ngt',1)">+</button>
+            </div>
+          </div>
+
         </div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Weekday 8h</div>
-            <div class="shift-detail">08h–16h · 7h base + 1h eve</div>
-            <div class="shift-val" id="val_wd8">€0/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="adj('wd8',-1)">−</button>
-            <span class="shift-count" id="cnt_wd8">0</span>
-            <button class="shift-btn" onclick="adj('wd8',1)">+</button>
-          </div>
-        </div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Weekday 7.5h</div>
-            <div class="shift-detail">15h30–23h · 6.5h eve + 1h night</div>
-            <div class="shift-val" id="val_wd75">€0/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="adj('wd75',-1)">−</button>
-            <span class="shift-count" id="cnt_wd75">0</span>
-            <button class="shift-btn" onclick="adj('wd75',1)">+</button>
-          </div>
-        </div>
-
-        <!-- FRIDAY -->
-        <div class="shift-section">Friday</div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Friday 8h</div>
-            <div class="shift-detail">08h–16h · 7h base + 1h eve</div>
-            <div class="shift-val" id="val_fri8">€0/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="adj('fri8',-1)">−</button>
-            <span class="shift-count" id="cnt_fri8">0</span>
-            <button class="shift-btn" onclick="adj('fri8',1)">+</button>
-          </div>
-        </div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Friday 7.5h</div>
-            <div class="shift-detail">15h30–23h · 2.5h eve + 4h wknd + 1h night</div>
-            <div class="shift-val" id="val_fri75">€0/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="adj('fri75',-1)">−</button>
-            <span class="shift-count" id="cnt_fri75">0</span>
-            <button class="shift-btn" onclick="adj('fri75',1)">+</button>
-          </div>
-        </div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Friday 12h</div>
-            <div class="shift-detail">08h–20h · 7h base + 3h eve + 2h wknd</div>
-            <div class="shift-val" id="val_fri12">€0/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="adj('fri12',-1)">−</button>
-            <span class="shift-count" id="cnt_fri12">0</span>
-            <button class="shift-btn" onclick="adj('fri12',1)">+</button>
-          </div>
-        </div>
-
-        <!-- SATURDAY -->
-        <div class="shift-section">Saturday</div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Saturday 15h</div>
-            <div class="shift-detail">08h–23h · 14h wknd + 1h night</div>
-            <div class="shift-val" id="val_sat15">€0/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="adj('sat15',-1)">−</button>
-            <span class="shift-count" id="cnt_sat15">0</span>
-            <button class="shift-btn" onclick="adj('sat15',1)">+</button>
-          </div>
-        </div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Saturday 8h</div>
-            <div class="shift-detail">12h–20h · 8h wknd</div>
-            <div class="shift-val" id="val_sat8">€0/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="adj('sat8',-1)">−</button>
-            <span class="shift-count" id="cnt_sat8">0</span>
-            <button class="shift-btn" onclick="adj('sat8',1)">+</button>
-          </div>
-        </div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Saturday 12h</div>
-            <div class="shift-detail">10h–22h · 12h wknd</div>
-            <div class="shift-val" id="val_sat12">€0/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="adj('sat12',-1)">−</button>
-            <span class="shift-count" id="cnt_sat12">0</span>
-            <button class="shift-btn" onclick="adj('sat12',1)">+</button>
-          </div>
-        </div>
-
-        <!-- SUNDAY -->
-        <div class="shift-section">Sunday</div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Sunday 15h</div>
-            <div class="shift-detail">08h–23h · 14h wknd + 1h night</div>
-            <div class="shift-val" id="val_sun15">€0/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="adj('sun15',-1)">−</button>
-            <span class="shift-count" id="cnt_sun15">0</span>
-            <button class="shift-btn" onclick="adj('sun15',1)">+</button>
-          </div>
-        </div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Sunday 8h</div>
-            <div class="shift-detail">12h–20h · 8h wknd</div>
-            <div class="shift-val" id="val_sun8">€0/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="adj('sun8',-1)">−</button>
-            <span class="shift-count" id="cnt_sun8">0</span>
-            <button class="shift-btn" onclick="adj('sun8',1)">+</button>
-          </div>
-        </div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Sunday 12h</div>
-            <div class="shift-detail">10h–22h · 12h wknd</div>
-            <div class="shift-val" id="val_sun12">€0/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="adj('sun12',-1)">−</button>
-            <span class="shift-count" id="cnt_sun12">0</span>
-            <button class="shift-btn" onclick="adj('sun12',1)">+</button>
-          </div>
-        </div>
-
-        <!-- NIGHT -->
-        <div class="shift-section">Night</div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Sunday night</div>
-            <div class="shift-detail">Sun 20h→Mon 06h · 2h wknd + 8h night</div>
-            <div class="shift-val" id="val_ngt">€0/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="adj('ngt',-1)">−</button>
-            <span class="shift-count" id="cnt_ngt">0</span>
-            <button class="shift-btn" onclick="adj('ngt',1)">+</button>
-          </div>
-        </div>
-
       </div>
     </div>
-  </div>
 
-  <!-- 7. Clinical hours tracker -->
-  <div class="card">
-    <div class="card-header">Clinical Hours This Month</div>
-    <div class="card-body">
-      <div class="hours-summary">
-        <span class="hours-count"><span id="hrs_selected">0</span>h / <span id="hrs_required">82.33</span>h</span>
-        <span class="hours-req">required</span>
-      </div>
-      <div class="progress-track">
-        <div class="progress-fill green" id="hrs_bar" style="width:0%"></div>
-      </div>
-      <div class="hours-status" id="hrs_status"></div>
-      <div class="hours-motivational" id="hrs_motivational"></div>
-    </div>
-  </div>
-
-  <!-- 8. Coverage bonus -->
-  <div class="card">
-    <div class="card-header">Coverage Bonus (one-time)</div>
-    <div class="card-body">
-      <div class="radio-group bonus-seg">
-        <label class="radio-row">
-          <input type="radio" name="bonus" value="0" checked>
-          <span class="radio-dot"></span>
-          <span class="radio-label">None</span>
-        </label>
-        <label class="radio-row">
-          <input type="radio" name="bonus" value="600">
-          <span class="radio-dot"></span>
-          <span class="radio-label">+€600 <small>Weekend/holiday urgent shift</small></span>
-        </label>
-        <label class="radio-row">
-          <input type="radio" name="bonus" value="450">
-          <span class="radio-dot"></span>
-          <span class="radio-label">+€450 <small>Weekday urgent shift</small></span>
-        </label>
+    <div class="card">
+      <div class="card-header">Clinical Hours This Month</div>
+      <div class="card-body">
+        <div class="hours-summary">
+          <span class="hours-count"><span id="hrs_selected">0</span>h / <span id="hrs_required">82.33</span>h</span>
+          <span class="hours-req">required</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill green" id="hrs_bar" style="width:0%"></div>
+        </div>
+        <div class="hours-status" id="hrs_status"></div>
+        <div class="hours-motivational" id="hrs_motivational"></div>
       </div>
     </div>
-  </div>
 
-  <!-- 8. Results -->
-  <div class="results-card">
-    <div class="results-hero">
-      <div class="label">Monthly Gross</div>
-      <div class="amount" id="res_monthly">€0</div>
-      <div class="sub" id="res_monthly_sub">base salary + clinical shifts</div>
-    </div>
-    <div class="results-annual">
-      <span class="a-label">Annual Gross</span>
-      <span class="a-amount" id="res_annual">€0</span>
-    </div>
-    <div class="results-breakdown">
-      <div class="breakdown-title">Monthly breakdown</div>
-      <div class="breakdown-rows">
-        <div class="br-row">
-          <span class="br-label">Effective base salary</span>
-          <span class="br-val" id="bd_base">€0</span>
-        </div>
-        <div class="br-row negative">
-          <span class="br-label" id="bd_embedded_label">Embedded clinical (82.33h)</span>
-          <span class="br-val" id="bd_embedded">−€0</span>
-        </div>
-        <div class="br-row positive">
-          <span class="br-label">Clinical shift value</span>
-          <span class="br-val" id="bd_clinical">+€0</span>
-        </div>
-        <div class="br-row positive">
-          <span class="br-label">Add-ons</span>
-          <span class="br-val" id="bd_addons">+€0</span>
-        </div>
-        <div class="br-row amber">
-          <span class="br-label">Coverage bonus</span>
-          <span class="br-val" id="bd_bonus">+€0</span>
-        </div>
-        <div class="br-row total">
-          <span class="br-label">Monthly gross</span>
-          <span class="br-val" id="bd_total">€0</span>
+    <div class="card">
+      <div class="card-header">Coverage Bonus (one-time)</div>
+      <div class="card-body">
+        <div class="radio-group">
+          <label class="radio-row">
+            <input type="radio" name="bonus" value="0" checked>
+            <span class="radio-dot"></span>
+            <span class="radio-label">None</span>
+          </label>
+          <label class="radio-row">
+            <input type="radio" name="bonus" value="600">
+            <span class="radio-dot"></span>
+            <span class="radio-label">+€600 <small>Weekend/holiday urgent shift</small></span>
+          </label>
+          <label class="radio-row">
+            <input type="radio" name="bonus" value="450">
+            <span class="radio-dot"></span>
+            <span class="radio-label">+€450 <small>Weekday urgent shift</small></span>
+          </label>
         </div>
       </div>
-      <div class="breakdown-title mt4" style="margin-top:16px">Annual breakdown</div>
-      <div class="breakdown-rows">
-        <div class="br-row">
-          <span class="br-label">11 regular months</span>
-          <span class="br-val" id="bd_11m">€0</span>
-        </div>
-        <div class="br-row">
-          <span class="br-label">Holiday month (base only)</span>
-          <span class="br-val" id="bd_holmonth">€0</span>
-        </div>
-        <div class="br-row positive">
-          <span class="br-label">Lomaraha (60% of base)</span>
-          <span class="br-val" id="bd_lomaraha">+€0</span>
-        </div>
-        <div class="br-row total">
-          <span class="br-label">Annual gross</span>
-          <span class="br-val" id="bd_annual">€0</span>
-        </div>
+    </div>
+
+  </div><!-- /panel-1 -->
+
+
+  <!-- ═══ TAB 2: RESULTADO ═══ -->
+  <div class="tab-panel" id="panel-2" style="display:none">
+
+    <div class="results-card">
+
+      <div class="results-hero">
+        <div class="label">Salário mensal bruto</div>
+        <div class="amount" id="res_monthly">€0</div>
+        <div class="sub" id="res_monthly_sub">base salary + clinical shifts</div>
       </div>
 
-      <!-- Freelance comparison -->
-      <div class="cmp-section">
-        <div class="cmp-title">Same shifts · Freelance model</div>
-        <div class="cmp-row" id="cmp_equiv">Freelance equivalent: —</div>
+      <div class="cmp-always">
+        <div class="cmp-title-sm">Same shifts · Freelance model</div>
+        <div class="cmp-row"  id="cmp_equiv">Add shifts to compare</div>
         <div class="cmp-diff" id="cmp_diff"></div>
         <div class="cmp-annual" id="cmp_annual"></div>
       </div>
-    </div>
-  </div>
+
+      <div class="results-annual">
+        <span class="a-label">Annual Gross</span>
+        <span class="a-amount" id="res_annual">€0</span>
+      </div>
+
+      <button class="details-toggle" id="details-toggle" onclick="toggleDetails()">Ver detalhes ↓</button>
+
+      <div id="details-panel" style="display:none">
+
+        <div class="results-breakdown">
+          <div class="breakdown-title mt16">Monthly breakdown</div>
+          <div class="breakdown-rows">
+            <div class="br-row">
+              <span class="br-label">Effective base salary</span>
+              <span class="br-val" id="bd_base">€0</span>
+            </div>
+            <div class="br-row negative">
+              <span class="br-label" id="bd_embedded_label">Embedded clinical (82.33h)</span>
+              <span class="br-val" id="bd_embedded">−€0</span>
+            </div>
+            <div class="br-row positive">
+              <span class="br-label">Clinical shift value</span>
+              <span class="br-val" id="bd_clinical">+€0</span>
+            </div>
+            <div class="br-row positive">
+              <span class="br-label">Add-ons</span>
+              <span class="br-val" id="bd_addons">+€0</span>
+            </div>
+            <div class="br-row amber">
+              <span class="br-label">Coverage bonus</span>
+              <span class="br-val" id="bd_bonus">+€0</span>
+            </div>
+            <div class="br-row total">
+              <span class="br-label">Monthly gross</span>
+              <span class="br-val" id="bd_total">€0</span>
+            </div>
+          </div>
+
+          <div class="breakdown-title mt16">Annual breakdown</div>
+          <div class="breakdown-rows">
+            <div class="br-row">
+              <span class="br-label">11 regular months</span>
+              <span class="br-val" id="bd_11m">€0</span>
+            </div>
+            <div class="br-row">
+              <span class="br-label">Holiday month (base only)</span>
+              <span class="br-val" id="bd_holmonth">€0</span>
+            </div>
+            <div class="br-row positive">
+              <span class="br-label">Lomaraha (60% of base)</span>
+              <span class="br-val" id="bd_lomaraha">+€0</span>
+            </div>
+            <div class="br-row total">
+              <span class="br-label">Annual gross</span>
+              <span class="br-val" id="bd_annual">€0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="details-rates">
+          <div class="breakdown-title">Live Rates</div>
+          <div class="rates-grid">
+            <div class="rate-cell">
+              <div class="rate-label">Base (daytime)</div>
+              <div class="rate-value" id="rate_base">€0.00</div>
+              <div class="rate-sub">×1.0 · 08h–15h (Mon–Fri)</div>
+            </div>
+            <div class="rate-cell">
+              <div class="rate-label">Evening</div>
+              <div class="rate-value" id="rate_eve">€0.00</div>
+              <div class="rate-sub">×2.1 · 15h–22h (Mon–Thu)</div>
+            </div>
+            <div class="rate-cell">
+              <div class="rate-label">Weekend/Holiday</div>
+              <div class="rate-value" id="rate_wknd">€0.00</div>
+              <div class="rate-sub">×2.7 · 08h–22h (Sat/Sun)</div>
+            </div>
+            <div class="rate-cell">
+              <div class="rate-label">Night</div>
+              <div class="rate-value" id="rate_night">€0.00</div>
+              <div class="rate-sub">×3.5 · 22h–24h (Fri/Sat/Sun)</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:0 20px 18px;">
+          <button class="details-toggle" style="margin:0;width:100%;" onclick="toggleDetails()">Ocultar detalhes ↑</button>
+        </div>
+
+      </div><!-- /details-panel -->
+
+    </div><!-- /results-card -->
+
+  </div><!-- /panel-2 -->
 
 </main>
 
-<!-- ══════════════ FREELANCE MODE ══════════════ -->
-<main id="mode-freelance" style="display:none">
-
-  <!-- Freelance shifts card -->
-  <div class="card">
-    <div class="card-header">Shifts This Month</div>
-    <div class="card-body">
-      <div class="shifts-grid">
-
-        <div class="fl-section">Weekday</div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Weekday 8h</div>
-            <div class="shift-detail">08h–16h · 7h×€75.25 + 1h×€98.00</div>
-            <div class="shift-val" id="fl_val_wd8">€624.75/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="fladj('wd8',-1)">−</button>
-            <span class="shift-count" id="fl_cnt_wd8">0</span>
-            <button class="shift-btn" onclick="fladj('wd8',1)">+</button>
-          </div>
-        </div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Weekday 12h</div>
-            <div class="shift-detail">08h–20h · 7h×€75.25 + 5h×€98.00</div>
-            <div class="shift-val" id="fl_val_wd12">€1,016.75/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="fladj('wd12',-1)">−</button>
-            <span class="shift-count" id="fl_cnt_wd12">0</span>
-            <button class="shift-btn" onclick="fladj('wd12',1)">+</button>
-          </div>
-        </div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Weekday 7.5h</div>
-            <div class="shift-detail">15h30–23h · 4.5h×€98.00 + 3h×€104.00</div>
-            <div class="shift-val" id="fl_val_wd75">€753.00/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="fladj('wd75',-1)">−</button>
-            <span class="shift-count" id="fl_cnt_wd75">0</span>
-            <button class="shift-btn" onclick="fladj('wd75',1)">+</button>
-          </div>
-        </div>
-
-        <div class="fl-section">Friday</div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Friday 8h</div>
-            <div class="shift-detail">08h–16h · 7h×€75.25 + 1h×€98.00</div>
-            <div class="shift-val" id="fl_val_fri8">€624.75/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="fladj('fri8',-1)">−</button>
-            <span class="shift-count" id="fl_cnt_fri8">0</span>
-            <button class="shift-btn" onclick="fladj('fri8',1)">+</button>
-          </div>
-        </div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Friday 12h</div>
-            <div class="shift-detail">08h–20h · 7h×€75.25 + 5h×€98.00</div>
-            <div class="shift-val" id="fl_val_fri12">€1,016.75/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="fladj('fri12',-1)">−</button>
-            <span class="shift-count" id="fl_cnt_fri12">0</span>
-            <button class="shift-btn" onclick="fladj('fri12',1)">+</button>
-          </div>
-        </div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Friday 7.5h</div>
-            <div class="shift-detail">15h30–23h · 4.5h×€98.00 + 3h×€104.00</div>
-            <div class="shift-val" id="fl_val_fri75">€753.00/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="fladj('fri75',-1)">−</button>
-            <span class="shift-count" id="fl_cnt_fri75">0</span>
-            <button class="shift-btn" onclick="fladj('fri75',1)">+</button>
-          </div>
-        </div>
-
-        <div class="fl-section">Saturday</div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Saturday 8h</div>
-            <div class="shift-detail">12h–20h · 8h×€104.00</div>
-            <div class="shift-val" id="fl_val_sat8">€832.00/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="fladj('sat8',-1)">−</button>
-            <span class="shift-count" id="fl_cnt_sat8">0</span>
-            <button class="shift-btn" onclick="fladj('sat8',1)">+</button>
-          </div>
-        </div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Saturday 12h</div>
-            <div class="shift-detail">10h–22h · 12h×€104.00</div>
-            <div class="shift-val" id="fl_val_sat12">€1,248.00/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="fladj('sat12',-1)">−</button>
-            <span class="shift-count" id="fl_cnt_sat12">0</span>
-            <button class="shift-btn" onclick="fladj('sat12',1)">+</button>
-          </div>
-        </div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Saturday 15h</div>
-            <div class="shift-detail">08h–23h · 14h×€104.00 + 1h×€117.00</div>
-            <div class="shift-val" id="fl_val_sat15">€1,573.00/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="fladj('sat15',-1)">−</button>
-            <span class="shift-count" id="fl_cnt_sat15">0</span>
-            <button class="shift-btn" onclick="fladj('sat15',1)">+</button>
-          </div>
-        </div>
-
-        <div class="fl-section">Sunday</div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Sunday 8h</div>
-            <div class="shift-detail">12h–20h · 8h×€104.00</div>
-            <div class="shift-val" id="fl_val_sun8">€832.00/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="fladj('sun8',-1)">−</button>
-            <span class="shift-count" id="fl_cnt_sun8">0</span>
-            <button class="shift-btn" onclick="fladj('sun8',1)">+</button>
-          </div>
-        </div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Sunday 12h</div>
-            <div class="shift-detail">10h–22h · 12h×€104.00</div>
-            <div class="shift-val" id="fl_val_sun12">€1,248.00/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="fladj('sun12',-1)">−</button>
-            <span class="shift-count" id="fl_cnt_sun12">0</span>
-            <button class="shift-btn" onclick="fladj('sun12',1)">+</button>
-          </div>
-        </div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Sunday 15h</div>
-            <div class="shift-detail">08h–23h · 14h×€104.00 + 1h×€117.00</div>
-            <div class="shift-val" id="fl_val_sun15">€1,573.00/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="fladj('sun15',-1)">−</button>
-            <span class="shift-count" id="fl_cnt_sun15">0</span>
-            <button class="shift-btn" onclick="fladj('sun15',1)">+</button>
-          </div>
-        </div>
-
-        <div class="fl-section">Night</div>
-
-        <div class="shift-row">
-          <div class="shift-info">
-            <div class="shift-name">Night shift</div>
-            <div class="shift-detail">Sun 20h–Mon 06h · 2h×€104.00 + 8h×€117.00</div>
-            <div class="shift-val" id="fl_val_ngt">€1,144.00/shift</div>
-          </div>
-          <div class="shift-ctrl">
-            <button class="shift-btn" onclick="fladj('ngt',-1)">−</button>
-            <span class="shift-count" id="fl_cnt_ngt">0</span>
-            <button class="shift-btn" onclick="fladj('ngt',1)">+</button>
-          </div>
-        </div>
-
-      </div>
-    </div>
+<div class="footer-bar" id="footer-bar">
+  <div class="footer-bar-info">
+    <span class="footer-bar-label">Total mensal</span>
+    <span class="footer-bar-total" id="footer-total">€0</span>
   </div>
-
-  <!-- Freelance results -->
-  <div class="results-card">
-    <div class="results-hero">
-      <div class="label">Monthly Gross</div>
-      <div class="amount" id="fl_monthly">€0</div>
-      <div class="sub">No base salary · shifts only</div>
-    </div>
-    <div class="results-annual">
-      <span class="a-label">Annual Gross</span>
-      <span class="a-amount" id="fl_annual">€0</span>
-    </div>
-    <div class="results-breakdown">
-      <div class="fl-warning">⚠️ No holiday pay · No lomaraha · 12 months of work with no paid rest</div>
-      <div class="breakdown-title" style="margin-top:14px">Breakdown</div>
-      <div class="breakdown-rows">
-        <div class="br-row">
-          <span class="br-label">Total shifts</span>
-          <span class="br-val" id="fl_bd_shifts">0</span>
-        </div>
-        <div class="br-row">
-          <span class="br-label">Total hours</span>
-          <span class="br-val" id="fl_bd_hours">0h</span>
-        </div>
-        <div class="br-row positive">
-          <span class="br-label">Weekday total</span>
-          <span class="br-val" id="fl_bd_wday">€0</span>
-        </div>
-        <div class="br-row positive">
-          <span class="br-label">Weekend total</span>
-          <span class="br-val" id="fl_bd_wknd">€0</span>
-        </div>
-        <div class="br-row positive">
-          <span class="br-label">Night total</span>
-          <span class="br-val" id="fl_bd_night">€0</span>
-        </div>
-        <div class="br-row total">
-          <span class="br-label">Monthly gross</span>
-          <span class="br-val" id="fl_bd_total">€0</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</main>
+  <button class="footer-bar-btn" onclick="showTab(2)">Ver resultado →</button>
+</div>
 
 <footer>Lääkärisopimus 2025–2028 · Liite 3 · For simulation purposes only</footer>
 
 <script>
-// --- Constants ---
-const BASE = { '3A': 7370, '3B': 7800, '3C': 8507.50 };
-const MONTHLY_HOURS     = 165.75; // 38.25h/week × 52/12
-const SHIFT_DIVISOR = 160; // Fixed divisor: salary_group_base / 160 = shift hourly rate (Lääkärisopimus 2025–2028 Liite 3)
-function shiftBase() { return fullCalcBase() / SHIFT_DIVISOR; }
+// ─── Constants ────────────────────────────────────────────────────────────────
+const BASE           = { '3A': 7370, '3B': 7800, '3C': 8507.50 };
+const MONTHLY_HOURS  = 165.75;
+const SHIFT_DIVISOR  = 160;
 const EMBEDDED_HOURS_100 = 82.33;
 const EMBEDDED_HOURS_80  = 65.86;
 
-// All shift keys
+function shiftBase() { return fullCalcBase() / SHIFT_DIVISOR; }
+
+// ─── Shift counters ───────────────────────────────────────────────────────────
 const counts = {
-  wd12: 0, wd8: 0, wd75: 0,            // weekday
-  fri8: 0, fri75: 0, fri12: 0,         // friday
-  sat15: 0, sat8: 0, sat12: 0,         // saturday
-  sun15: 0, sun8: 0, sun12: 0,         // sunday
-  ngt: 0,                               // sunday night
+  wd12: 0, wd8: 0, wd75: 0,
+  fri8: 0, fri75: 0, fri12: 0,
+  sat15: 0, sat8: 0, sat12: 0,
+  sun15: 0, sun8: 0, sun12: 0,
+  ngt: 0,
 };
 
-// --- Getters ---
+// ─── Getters ──────────────────────────────────────────────────────────────────
 function getContract() { return document.querySelector('input[name=contract]:checked').value; }
 function getGroup()    { return document.querySelector('input[name=group]:checked').value; }
 function getExp()      { return parseFloat(document.querySelector('input[name=exp]:checked').value); }
@@ -1127,171 +973,122 @@ function getAddons() {
 }
 function getBonus() { return parseFloat(document.querySelector('input[name=bonus]:checked').value); }
 
-// --- Base calculations ---
-// Full calc base = group_base × exp × raises. Hourly rate always derived from this.
-// Contract % NEVER affects hourly rate or shift values.
+// ─── Base calculations ────────────────────────────────────────────────────────
 function fullCalcBase() {
   const { r2026, r2027 } = getRaises();
   return BASE[getGroup()] * (1 + getExp()) * (1 + r2026) * (1 + r2027);
 }
-// Base received = fullCalcBase × contract factor (0.80 or 1.00)
 function baseReceived() {
   return fullCalcBase() * (getContract() === '80' ? 0.80 : 1.00);
 }
-// Hourly rate always from full calc base
 function hourlyRate() { return fullCalcBase() / MONTHLY_HOURS; }
 
-// --- Shift value formulas (per single shift) ---
+// ─── Shift values ─────────────────────────────────────────────────────────────
 // Multipliers per Lääkärisopimus 2025–2028 Liite 3, base = fullCalcBase()/160.
-// Mon:       00–08×3.5, 08–15×1.0, 15–18×2.1, 18–22×2.1, 22–24×3.0
-// Tue–Thu:   00–08×3.0, 08–15×1.0, 15–18×2.1, 18–22×2.1, 22–24×3.0
-// Fri:       00–08×3.0, 08–15×1.0, 15–18×2.1, 18–22×2.7, 22–24×3.5
-// Sat/Sun:   00–08×3.5, 08–22×2.7, 22–24×3.5
+// Mon:     00–08×3.5, 08–15×1.0, 15–22×2.1, 22–24×3.0
+// Tue–Thu: 00–08×3.0, 08–15×1.0, 15–22×2.1, 22–24×3.0
+// Fri:     00–08×3.0, 08–15×1.0, 15–18×2.1, 18–22×2.7, 22–24×3.5
+// Sat/Sun: 00–08×3.5, 08–22×2.7, 22–24×3.5
 function shiftValues() {
   const s = shiftBase();
   return {
-    // Weekday (Mon–Thu)
-    wd12:  (7*1.0 + 3*2.1 + 2*2.1) * s,  // 08–15×1.0, 15–18×2.1, 18–20×2.1
-    wd8:   (7*1.0 + 1*2.1) * s,           // 08–15×1.0, 15–16×2.1
-    wd75:  (6.5*2.1 + 1*3.0) * s,         // 15:30–22×2.1, 22–23×3.0
-    // Friday
-    fri8:  (7*1.0 + 1*2.1) * s,           // 08–15×1.0, 15–16×2.1
-    fri12: (7*1.0 + 3*2.1 + 2*2.7) * s,  // 08–15×1.0, 15–18×2.1, 18–20×2.7
-    fri75: (2.5*2.1 + 4*2.7 + 1*3.5) * s,// 15:30–18×2.1, 18–22×2.7, 22–23×3.5
-    // Saturday
-    sat15: (14*2.7 + 1*3.5) * s,          // 08–22×2.7, 22–23×3.5
-    sat8:  (8*2.7) * s,                   // 12–20×2.7
-    sat12: (12*2.7) * s,                  // 10–22×2.7
-    // Sunday
-    sun15: (14*2.7 + 1*3.5) * s,          // 08–22×2.7, 22–23×3.5
-    sun8:  (8*2.7) * s,                   // 12–20×2.7
-    sun12: (12*2.7) * s,                  // 10–22×2.7
-    // Sunday night (20h–06h)
-    ngt:   (2*2.7 + 8*3.5) * s,           // 20–22×2.7, 22–06×3.5
+    wd12:  (7*1.0 + 3*2.1 + 2*2.1) * s,
+    wd8:   (7*1.0 + 1*2.1) * s,
+    wd75:  (6.5*2.1 + 1*3.0) * s,
+    fri8:  (7*1.0 + 1*2.1) * s,
+    fri12: (7*1.0 + 3*2.1 + 2*2.7) * s,
+    fri75: (2.5*2.1 + 4*2.7 + 1*3.5) * s,
+    sat15: (14*2.7 + 1*3.5) * s,
+    sat8:  8*2.7 * s,
+    sat12: 12*2.7 * s,
+    sun15: (14*2.7 + 1*3.5) * s,
+    sun8:  8*2.7 * s,
+    sun12: 12*2.7 * s,
+    ngt:   (2*2.7 + 8*3.5) * s,
   };
 }
 
-// --- Boundary tests (run once at load) ---
-(function runShiftTests() {
-  const s = shiftBase();
-  const cases = [
-    // [description, actual, expected]
-    // Mon 10:00 → in 08–15 band (×1.0): wd8 covers 08–16 = 7×1.0 + 1×2.1
-    ['wd8 (Mon 08–16)',  (7*1.0 + 1*2.1)*s, 443.625],
-    // Fri 20:00 → in 18–22 band (×2.7): fri12 covers 08–20 = 7×1.0 + 3×2.1 + 2×2.7
-    ['fri12 (Fri 08–20)', (7*1.0 + 3*2.1 + 2*2.7)*s, 911.625],
-    // Sat 12:00 → in 08–22 band (×2.7): sat12 covers 10–22 = 12×2.7
-    ['sat12 (Sat 10–22)', (12*2.7)*s, 1579.50],
-    // Sun 23:00 → in 22–24 band (×3.5): sun15 covers 08–23 = 14×2.7 + 1×3.5
-    ['sun15 (Sun 08–23)', (14*2.7 + 1*3.5)*s, 2013.375],
-    // Boundary 08:00 exactly: start of ×1.0 band (not ×3.x night)
-    ['boundary 08:00 → ×1.0 applies', 1.0*s, 48.75],
-    // Boundary 15:00 exactly: start of ×2.1 band
-    ['boundary 15:00 → ×2.1 applies', 2.1*s, 102.375],
-    // Boundary 18:00 exactly: start of ×2.7 band (Fri)
-    ['boundary 18:00 Fri → ×2.7 applies', 2.7*s, 131.625],
-    // Boundary 22:00 exactly: start of ×3.5 band (Fri/Sat/Sun)
-    ['boundary 22:00 Fri → ×3.5 applies', 3.5*s, 170.625],
-    // Boundary 24:00 (=00:00): last second of ×3.x band
-    ['boundary 24:00 Sat → ×3.5 applies', 3.5*s, 170.625],
-  ];
+// ─── Smoke tests at load (expects 3B default, shiftBase = 48.75) ──────────────
+(function() {
   const sv = shiftValues();
-  console.assert(Math.abs(sv.wd8   - 443.625)  < 0.001, 'wd8 mismatch',   sv.wd8);
-  console.assert(Math.abs(sv.fri12 - 911.625)  < 0.001, 'fri12 mismatch', sv.fri12);
-  console.assert(Math.abs(sv.sat12 - 1579.50)  < 0.001, 'sat12 mismatch', sv.sat12);
-  console.assert(Math.abs(sv.sun15 - 2013.375) < 0.001, 'sun15 mismatch', sv.sun15);
-  cases.forEach(([desc, actual, expected]) => {
-    if (Math.abs(actual - expected) > 0.001) {
-      console.error(`SHIFT TEST FAIL: ${desc} → got ${actual}, expected ${expected}`);
-    }
-  });
+  console.assert(Math.abs(sv.wd8   - 443.625)  < 0.001, 'wd8 mismatch');
+  console.assert(Math.abs(sv.fri12 - 911.625)  < 0.001, 'fri12 mismatch');
+  console.assert(Math.abs(sv.sat12 - 1579.50)  < 0.001, 'sat12 mismatch');
+  console.assert(Math.abs(sv.sun15 - 2013.375) < 0.001, 'sun15 mismatch');
 })();
 
-// --- Hours per shift (for clinical hours tracker) ---
+// ─── Hours per shift ──────────────────────────────────────────────────────────
 const SHIFT_HOURS = {
   wd12: 12, wd8: 8, wd75: 7.5,
-  fri8: 8,  fri75: 7.5, fri12: 12,
+  fri8: 8, fri75: 7.5, fri12: 12,
   sat15: 15, sat8: 8, sat12: 12,
   sun15: 15, sun8: 8, sun12: 12,
   ngt: 10,
 };
-
 function totalSelectedHours() {
-  return Object.keys(counts).reduce((sum, k) => sum + counts[k] * (SHIFT_HOURS[k] || 0), 0);
+  return Object.keys(counts).reduce((s, k) => s + counts[k] * (SHIFT_HOURS[k] || 0), 0);
 }
 
-// --- Main calc ---
+// ─── Main calc ────────────────────────────────────────────────────────────────
 function calc() {
-  const is80 = getContract() === '80';
+  const is80          = getContract() === '80';
   const embeddedHours = is80 ? EMBEDDED_HOURS_80 : EMBEDDED_HOURS_100;
-
-  const br = baseReceived();
-  const h  = hourlyRate();
-  const sv = shiftValues();
-
+  const br  = baseReceived();
+  const h   = hourlyRate();
+  const sv  = shiftValues();
   const embedded = embeddedHours * h;
-
-  // Sum all shifts
   const clinicalValue =
     counts.wd12  * sv.wd12  + counts.wd8   * sv.wd8   + counts.wd75  * sv.wd75  +
     counts.fri8  * sv.fri8  + counts.fri75 * sv.fri75 + counts.fri12 * sv.fri12 +
     counts.sat15 * sv.sat15 + counts.sat8  * sv.sat8  + counts.sat12 * sv.sat12 +
     counts.sun15 * sv.sun15 + counts.sun8  * sv.sun8  + counts.sun12 * sv.sun12 +
     counts.ngt   * sv.ngt;
-
-  const addons = getAddons();
-  const bonus  = getBonus();
-
+  const addons       = getAddons();
+  const bonus        = getBonus();
   const monthly      = br - embedded + clinicalValue + addons + bonus;
   const holidayMonth = br;
   const lomaraha     = br * 0.60;
   const annual       = monthly * 11 + holidayMonth + lomaraha;
-
   return { br, h, sv, embedded, embeddedHours, clinicalValue, addons, bonus, monthly, holidayMonth, lomaraha, annual };
 }
 
-// --- Freelance equivalent for contract shifts ---
-// Uses the same counts[] object but applies freelance fixed rates.
+// ─── Freelance equivalent ─────────────────────────────────────────────────────
 const FL_EQUIV = {
-  wd12:  7*75.25 + 5*98.00,          // 08h–15h base + 15h–20h eve
-  wd8:   7*75.25 + 1*98.00,          // 08h–15h base + 15h–16h eve
-  wd75:  4.5*98.00 + 3*104.00,       // 15h30–20h eve + 20h–23h
-  fri12: 7*75.25 + 5*98.00,          // same as weekday
+  wd12:  7*75.25 + 5*98.00,
+  wd8:   7*75.25 + 1*98.00,
+  wd75:  4.5*98.00 + 3*104.00,
+  fri12: 7*75.25 + 5*98.00,
   fri8:  7*75.25 + 1*98.00,
   fri75: 4.5*98.00 + 3*104.00,
-  sat15: 14*104.00 + 1*117.00,       // 08h–22h + 22h–23h
+  sat15: 14*104.00 + 1*117.00,
   sat12: 12*104.00,
   sat8:  8*104.00,
   sun15: 14*104.00 + 1*117.00,
   sun12: 12*104.00,
   sun8:  8*104.00,
-  ngt:   2*104.00 + 8*117.00,        // 20h–22h + 22h–06h
+  ngt:   2*104.00 + 8*117.00,
 };
-
 function freelanceMonthly() {
-  return Object.keys(FL_EQUIV).reduce(
-    (sum, k) => sum + (counts[k] || 0) * FL_EQUIV[k], 0
-  );
+  return Object.keys(FL_EQUIV).reduce((s, k) => s + (counts[k] || 0) * FL_EQUIV[k], 0);
 }
 
-// --- Formatting ---
-function fmt(n)  { return '€' + n.toLocaleString('fi-FI', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-function fmtK(n) { return '€' + n.toLocaleString('fi-FI', { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
+// ─── Formatting ───────────────────────────────────────────────────────────────
+function fmt(n)      { return '€' + n.toLocaleString('fi-FI', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function fmtK(n)     { return '€' + n.toLocaleString('fi-FI', { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
 function fmtShift(n) { return fmt(n) + '/shift'; }
 
-// --- Render ---
+// ─── Render ───────────────────────────────────────────────────────────────────
 function render() {
-  const r = calc();
-  const h = r.h;
+  const r  = calc();
   const sv = r.sv;
+  const is80 = getContract() === '80';
 
   // Contract info
-  const is80 = getContract() === '80';
   document.getElementById('contract_info').textContent = is80
     ? '~30.8h/week · 65.86h/month embedded'
     : '~38.5h/week · 82.33h/month embedded';
 
-  // Live rates (always full hourly rate)
+  // Live rates (shiftBase tracks exp + raises automatically)
   const sb = shiftBase();
   document.getElementById('rate_base').textContent  = fmt(sb * 1.0);
   document.getElementById('rate_eve').textContent   = fmt(sb * 2.1);
@@ -1317,182 +1114,120 @@ function render() {
   const minHours = is80 ? EMBEDDED_HOURS_80 : EMBEDDED_HOURS_100;
   const selHours = totalSelectedHours();
   const pct      = selHours / minHours;
-  const fillPct  = Math.min(pct * 100, 100).toFixed(1);
-  const color    = pct < 0.8 ? 'red' : pct < 1.0 ? 'amber' : 'green';
   const bar      = document.getElementById('hrs_bar');
-  bar.style.width = fillPct + '%';
-  bar.className   = 'progress-fill ' + color;
+  bar.style.width = Math.min(pct * 100, 100).toFixed(1) + '%';
+  bar.className   = 'progress-fill ' + (pct < 0.8 ? 'red' : pct < 1.0 ? 'amber' : 'green');
   document.getElementById('hrs_selected').textContent = +selHours.toFixed(2);
   document.getElementById('hrs_required').textContent = minHours;
-  const contract  = is80 ? '80' : '100';
-  let statusText, motivText = '';
+  let statusText = '', motivText = '';
   if (pct >= 1.2) {
-    const surplus = (selHours - minHours).toFixed(2);
-    statusText = `✅ ${selHours.toFixed(2)}h selected — ${surplus}h above minimum`;
+    statusText = `✅ ${selHours.toFixed(2)}h selected — ${(selHours - minHours).toFixed(2)}h above minimum`;
     motivText  = 'You are doing great! 🌿';
   } else if (pct >= 1.0) {
     statusText = `✅ ${selHours.toFixed(2)}h selected — contract minimum met`;
     motivText  = 'You are doing great! 🌿';
-  } else {
-    const gap = (minHours - selHours).toFixed(2);
-    statusText = `⚠️ ${selHours.toFixed(2)}h selected — ${gap}h below your ${minHours}h minimum (${contract}% contract)`;
+  } else if (selHours > 0) {
+    statusText = `⚠️ ${selHours.toFixed(2)}h — ${(minHours - selHours).toFixed(2)}h below ${minHours}h minimum (${is80 ? '80' : '100'}% contract)`;
   }
-  document.getElementById('hrs_status').textContent      = statusText;
+  document.getElementById('hrs_status').textContent       = statusText;
   document.getElementById('hrs_motivational').textContent = motivText;
 
-  // Results hero
+  // Results
   document.getElementById('res_monthly').textContent = fmtK(r.monthly);
   document.getElementById('res_annual').textContent  = fmtK(r.annual);
 
-  // Monthly breakdown
   document.getElementById('bd_embedded_label').textContent = `Embedded clinical (${r.embeddedHours}h)`;
   document.getElementById('bd_base').textContent     = fmt(r.br);
   document.getElementById('bd_embedded').textContent = '−' + fmt(r.embedded);
   document.getElementById('bd_clinical').textContent = '+' + fmt(r.clinicalValue);
   document.getElementById('bd_addons').textContent   = r.addons > 0 ? '+' + fmt(r.addons) : fmt(0);
-  document.getElementById('bd_bonus').textContent    = r.bonus > 0  ? '+' + fmt(r.bonus)  : fmt(0);
+  document.getElementById('bd_bonus').textContent    = r.bonus  > 0 ? '+' + fmt(r.bonus)  : fmt(0);
   document.getElementById('bd_total').textContent    = fmt(r.monthly);
-
-  // Annual breakdown
   document.getElementById('bd_11m').textContent      = fmt(r.monthly * 11);
   document.getElementById('bd_holmonth').textContent = fmt(r.holidayMonth);
   document.getElementById('bd_lomaraha').textContent = '+' + fmt(r.lomaraha);
   document.getElementById('bd_annual').textContent   = fmt(r.annual);
 
   // Freelance comparison
+  const hasShifts = Object.values(counts).some(v => v > 0);
   const flMonthly = freelanceMonthly();
   const flAnnual  = flMonthly * 12;
   const diffM     = r.monthly - flMonthly;
   const diffA     = r.annual  - flAnnual;
-  const hasShifts = Object.values(counts).some(v => v > 0);
-
   if (!hasShifts) {
-    document.getElementById('cmp_equiv').textContent  = 'Freelance equivalent: add shifts to compare';
+    document.getElementById('cmp_equiv').textContent  = 'Add shifts to compare';
     document.getElementById('cmp_diff').textContent   = '';
     document.getElementById('cmp_annual').textContent = '';
   } else {
     document.getElementById('cmp_equiv').textContent =
-      `Freelance equivalent: ${fmtK(flMonthly)}/month · ${fmtK(flAnnual)}/year (×12, no holiday pay)`;
+      `Freelance equiv.: ${fmtK(flMonthly)}/mês · ${fmtK(flAnnual)}/ano`;
     const diffEl = document.getElementById('cmp_diff');
-    const sign = diffM >= 0 ? '+' : '−';
-    diffEl.textContent  = `${diffM >= 0 ? '↑' : '↓'} ${sign}${fmtK(Math.abs(diffM))}/month with new contract`;
-    diffEl.className    = 'cmp-diff ' + (diffM >= 0 ? 'up' : 'down');
+    diffEl.textContent = `${diffM >= 0 ? '↑' : '↓'} ${diffM >= 0 ? '+' : '−'}${fmtK(Math.abs(diffM))}/mês com novo contrato`;
+    diffEl.className   = 'cmp-diff ' + (diffM >= 0 ? 'up' : 'down');
     document.getElementById('cmp_annual').textContent =
-      `Annual difference: ${diffA >= 0 ? '+' : ''}${fmtK(diffA)} (incl. holiday pay & lomaraha)`;
+      `Diferença anual: ${diffA >= 0 ? '+' : ''}${fmtK(diffA)} (incl. férias & lomaraha)`;
+  }
+
+  // Footer bar
+  const bar2 = document.getElementById('footer-bar');
+  if (hasShifts) {
+    bar2.classList.add('visible');
+    document.getElementById('footer-total').textContent = fmtK(r.monthly);
+  } else {
+    bar2.classList.remove('visible');
   }
 }
 
-// --- Counter adjust ---
+// ─── Counter adjust ───────────────────────────────────────────────────────────
 function adj(key, delta) {
   counts[key] = Math.max(0, counts[key] + delta);
   document.getElementById('cnt_' + key).textContent = counts[key];
   render();
 }
 
-// Attach listeners to all radio/checkbox inputs
-document.querySelectorAll('input').forEach(el => el.addEventListener('change', render));
-// Personal supplement — live update on every keystroke
+// ─── Tab navigation ───────────────────────────────────────────────────────────
+function showTab(idx) {
+  document.querySelectorAll('.tab-panel').forEach((p, i) => {
+    p.style.display = i === idx ? '' : 'none';
+  });
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', i === idx);
+  });
+  window.scrollTo(0, 0);
+}
+
+// ─── Details toggle ───────────────────────────────────────────────────────────
+function toggleDetails() {
+  const panel = document.getElementById('details-panel');
+  const btn   = document.getElementById('details-toggle');
+  const open  = panel.style.display !== 'none';
+  panel.style.display = open ? 'none' : '';
+  btn.textContent     = open ? 'Ver detalhes ↓' : 'Ocultar detalhes ↑';
+}
+
+// ─── Presets ─────────────────────────────────────────────────────────────────
+function applyPreset(preset) {
+  Object.keys(counts).forEach(k => { counts[k] = 0; });
+  if (preset === 'light') {
+    counts.wd8 = 2; counts.wd75 = 2; counts.sat8 = 3;
+  } else if (preset === 'typical') {
+    counts.wd75 = 2; counts.sat12 = 3; counts.sun8 = 2;
+  } else if (preset === 'intense') {
+    counts.wd8 = 2; counts.wd75 = 2; counts.sat12 = 3;
+  }
+  Object.keys(counts).forEach(k => {
+    const el = document.getElementById('cnt_' + k);
+    if (el) el.textContent = counts[k];
+  });
+  render();
+}
+
+// ─── Listeners ────────────────────────────────────────────────────────────────
+document.querySelectorAll('input[type=radio], input[type=checkbox]').forEach(el =>
+  el.addEventListener('change', render)
+);
 document.getElementById('addon_personal').addEventListener('input', render);
 
-// ══════════════════════════════════════════════
-// FREELANCE MODE
-// ══════════════════════════════════════════════
-
-// Fixed shift values (euros per shift, pre-computed from spec)
-const FL_VALUES = {
-  wd8:   7*75.25 + 1*98.00,          // 624.75
-  wd12:  7*75.25 + 5*98.00,          // 1016.75
-  wd75:  4.5*98.00 + 3*104.00,       // 753.00
-  fri8:  7*75.25 + 1*98.00,          // 624.75
-  fri12: 7*75.25 + 5*98.00,          // 1016.75
-  fri75: 4.5*98.00 + 3*104.00,       // 753.00
-  sat8:  8*104.00,                    // 832.00
-  sat12: 12*104.00,                   // 1248.00
-  sat15: 14*104.00 + 1*117.00,       // 1573.00
-  sun8:  8*104.00,                    // 832.00
-  sun12: 12*104.00,                   // 1248.00
-  sun15: 14*104.00 + 1*117.00,       // 1573.00
-  ngt:   2*104.00 + 8*117.00,        // 1144.00
-};
-
-const FL_HOURS = {
-  wd8: 8, wd12: 12, wd75: 7.5,
-  fri8: 8, fri12: 12, fri75: 7.5,
-  sat8: 8, sat12: 12, sat15: 15,
-  sun8: 8, sun12: 12, sun15: 15,
-  ngt: 10,
-};
-
-// Freelance counters (separate from contract counters)
-const flCounts = {
-  wd8: 0, wd12: 0, wd75: 0,
-  fri8: 0, fri12: 0, fri75: 0,
-  sat8: 0, sat12: 0, sat15: 0,
-  sun8: 0, sun12: 0, sun15: 0,
-  ngt: 0,
-};
-
-function fladj(key, delta) {
-  flCounts[key] = Math.max(0, flCounts[key] + delta);
-  document.getElementById('fl_cnt_' + key).textContent = flCounts[key];
-  flRender();
-}
-
-function flCalc() {
-  let monthly = 0, totalShifts = 0, totalHours = 0;
-  let wdayTotal = 0, wkndTotal = 0, nightTotal = 0;
-
-  const wdayKeys = ['wd8','wd12','wd75','fri8','fri12','fri75'];
-  const wkndKeys = ['sat8','sat12','sat15','sun8','sun12','sun15'];
-  const nightKeys = ['ngt'];
-
-  for (const k of wdayKeys) {
-    const val = flCounts[k] * FL_VALUES[k];
-    wdayTotal += val; monthly += val;
-    totalShifts += flCounts[k];
-    totalHours  += flCounts[k] * FL_HOURS[k];
-  }
-  for (const k of wkndKeys) {
-    const val = flCounts[k] * FL_VALUES[k];
-    wkndTotal += val; monthly += val;
-    totalShifts += flCounts[k];
-    totalHours  += flCounts[k] * FL_HOURS[k];
-  }
-  for (const k of nightKeys) {
-    const val = flCounts[k] * FL_VALUES[k];
-    nightTotal += val; monthly += val;
-    totalShifts += flCounts[k];
-    totalHours  += flCounts[k] * FL_HOURS[k];
-  }
-
-  return { monthly, annual: monthly * 12, totalShifts, totalHours, wdayTotal, wkndTotal, nightTotal };
-}
-
-function flRender() {
-  const r = flCalc();
-  document.getElementById('fl_monthly').textContent  = fmtK(r.monthly);
-  document.getElementById('fl_annual').textContent   = fmtK(r.annual);
-  document.getElementById('fl_bd_shifts').textContent = r.totalShifts;
-  document.getElementById('fl_bd_hours').textContent  = r.totalHours.toFixed(1) + 'h';
-  document.getElementById('fl_bd_wday').textContent   = r.wdayTotal > 0  ? '+' + fmt(r.wdayTotal)  : fmt(0);
-  document.getElementById('fl_bd_wknd').textContent   = r.wkndTotal > 0  ? '+' + fmt(r.wkndTotal)  : fmt(0);
-  document.getElementById('fl_bd_night').textContent  = r.nightTotal > 0 ? '+' + fmt(r.nightTotal) : fmt(0);
-  document.getElementById('fl_bd_total').textContent  = fmt(r.monthly);
-}
-
-// Mode switching
-function switchMode() {
-  const isFreelance = document.querySelector('input[name=mode]:checked').value === 'freelance';
-  document.getElementById('mode-contract').style.display  = isFreelance ? 'none' : '';
-  document.getElementById('mode-freelance').style.display = isFreelance ? '' : 'none';
-}
-
-document.querySelectorAll('input[name=mode]').forEach(el => el.addEventListener('change', switchMode));
-
-// Initial freelance render (populates €/shift values)
-flRender();
-
-// Service worker
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
 
 render();
