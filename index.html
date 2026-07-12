@@ -1092,7 +1092,8 @@
 // --- Constants ---
 const BASE = { '3A': 7370, '3B': 7800, '3C': 8507.50 };
 const MONTHLY_HOURS     = 165.75; // 38.25h/week × 52/12
-const SHIFT_BASE = 48.75; // Fixed hourly base rate for shift add-ons (Lääkärisopimus 2025–2028 Liite 3)
+const SHIFT_DIVISOR = 160; // Fixed divisor: salary_group_base / 160 = shift hourly rate (Lääkärisopimus 2025–2028 Liite 3)
+function shiftBase() { return fullCalcBase() / SHIFT_DIVISOR; }
 const EMBEDDED_HOURS_100 = 82.33;
 const EMBEDDED_HOURS_80  = 65.86;
 
@@ -1141,13 +1142,13 @@ function baseReceived() {
 function hourlyRate() { return fullCalcBase() / MONTHLY_HOURS; }
 
 // --- Shift value formulas (per single shift) ---
-// Multipliers per Lääkärisopimus 2025–2028 Liite 3, base = SHIFT_BASE (€48.75/h fixed).
+// Multipliers per Lääkärisopimus 2025–2028 Liite 3, base = fullCalcBase()/160.
 // Mon:       00–08×3.5, 08–15×1.0, 15–18×2.1, 18–22×2.1, 22–24×3.0
 // Tue–Thu:   00–08×3.0, 08–15×1.0, 15–18×2.1, 18–22×2.1, 22–24×3.0
 // Fri:       00–08×3.0, 08–15×1.0, 15–18×2.1, 18–22×2.7, 22–24×3.5
 // Sat/Sun:   00–08×3.5, 08–22×2.7, 22–24×3.5
 function shiftValues() {
-  const s = SHIFT_BASE;
+  const s = shiftBase();
   return {
     // Weekday (Mon–Thu)
     wd12:  (7*1.0 + 3*2.1 + 2*2.1) * s,  // 08–15×1.0, 15–18×2.1, 18–20×2.1
@@ -1172,7 +1173,7 @@ function shiftValues() {
 
 // --- Boundary tests (run once at load) ---
 (function runShiftTests() {
-  const s = SHIFT_BASE; // 48.75
+  const s = shiftBase();
   const cases = [
     // [description, actual, expected]
     // Mon 10:00 → in 08–15 band (×1.0): wd8 covers 08–16 = 7×1.0 + 1×2.1
@@ -1291,10 +1292,11 @@ function render() {
     : '~38.5h/week · 82.33h/month embedded';
 
   // Live rates (always full hourly rate)
-  document.getElementById('rate_base').textContent  = fmt(SHIFT_BASE * 1.0);
-  document.getElementById('rate_eve').textContent   = fmt(SHIFT_BASE * 2.1);
-  document.getElementById('rate_wknd').textContent  = fmt(SHIFT_BASE * 2.7);
-  document.getElementById('rate_night').textContent = fmt(SHIFT_BASE * 3.5);
+  const sb = shiftBase();
+  document.getElementById('rate_base').textContent  = fmt(sb * 1.0);
+  document.getElementById('rate_eve').textContent   = fmt(sb * 2.1);
+  document.getElementById('rate_wknd').textContent  = fmt(sb * 2.7);
+  document.getElementById('rate_night').textContent = fmt(sb * 3.5);
 
   // Per-shift values
   document.getElementById('val_wd12').textContent  = fmtShift(sv.wd12);
